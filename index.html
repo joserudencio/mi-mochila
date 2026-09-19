@@ -10,7 +10,6 @@
     .pantalla{display:none}
     .activa{display:block}
 
-    /* LOGIN */
     .caja-login{background:#fff;border-radius:20px;padding:30px 25px;max-width:420px;margin:40px auto;box-shadow:0 8px 24px rgba(0,0,0,.15)}
     .logo{text-align:center;font-size:50px;margin-bottom:5px}
     .titulo{text-align:center;font-size:24px;color:#2E7D32;margin-bottom:5px}
@@ -24,92 +23,45 @@
     input:focus,textarea:focus{border-color:#4CAF50}
     .btn{width:100%;padding:14px;background:linear-gradient(to bottom,#66BB6A,#43A047);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #2E7D32;margin-top:5px;transition:all .2s}
     .btn:hover{transform:translateY(-2px)}
-    .btn:disabled{background:#ccc;cursor:not-allowed;box-shadow:none;transform:none}
     .mensaje{margin-top:15px;text-align:center;font-size:14px;min-height:22px}
     .error{color:#E53935}
     .exito{color:#2E7D32}
 
-    /* CABECERA */
     .cabecera{display:flex;align-items:center;gap:12px;background:#fff;padding:12px 18px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.1)}
-    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer;transition:transform .3s}
+    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer}
     .avatar-actual img{width:100%;height:100%;object-fit:cover}
-    .avatar-actual:hover{transform:scale(1.1)}
     .usuario{flex:1;font-weight:700;color:#2E7D32;font-size:15px}
-    .btn-salir{background:#EF5350;color:#fff;border:none;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+    .btn-salir{background:#EF5350;color:#fff;border:none;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer}
 
-    /* TITULO PRINCIPAL */
     .titulo-principal{text-align:center;background:#fff;border-radius:16px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
     .titulo-principal h2{font-size:22px;color:#2E7D32;margin-bottom:5px}
-    .titulo-principal p{color:#666;font-size:14px}
+    .titulo-principal p{color:#666}
 
-    /* AVATARES */
-    .seleccion-avatares{background:#fff;border-radius:18px;padding:22px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1);display:none}
-    .avatares-titulo{font-size:18px;color:#FF8F00;margin-bottom:15px;font-weight:700;display:flex;align-items:center;gap:8px}
-    .cuadricula-avatares{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:15px}
-    .avatar-opcion{text-align:center;padding:15px 10px;border-radius:14px;border:3px solid transparent;transition:all .3s;cursor:pointer}
-    .avatar-opcion.seleccionado{border-color:#FF8F00;background:#FFF3E0;box-shadow:0 3px 10px rgba(255,143,0,.25)}
-    .avatar-opcion.desbloqueado:hover{transform:scale(1.05);background:#FFF8E1}
-    .avatar-opcion.bloqueado{opacity:.4;cursor:not-allowed;background:#eee}
-    .avatar-foto{width:60px;height:60px;border-radius:50%;margin:0 auto 8px;overflow:hidden;border:3px solid #FFCC80}
-    .avatar-foto img{width:100%;height:100%;object-fit:cover}
-    .avatar-nombre{font-size:12px;font-weight:600;color:#444}
-    .avatar-condicion{font-size:10px;color:#888;margin-top:3px}
-    .cerrar-avatares{margin-top:15px;background:#ddd;color:#444;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;width:100%}
-
-    /* BARRA ESPACIO */
     .barra-espacio{background:#fff;border-radius:14px;padding:15px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
     .barra-fondo{height:12px;background:#E0E0E0;border-radius:6px;overflow:hidden}
     .barra-lleno{height:100%;background:linear-gradient(to right,#4CAF50,#FFC107,#E53935);border-radius:6px;transition:width .4s}
     .texto-barra{font-size:14px;margin-top:8px;color:#333;font-weight:600}
-    .aviso-limite{color:#E53935;font-weight:700;margin-top:10px;font-size:14px;padding:8px;background:#FFEBEE;border-radius:8px;display:none}
 
-    /* COMPRAR */
-    .comprar-espacio{background:#fff;border-radius:18px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center}
-    .btn-comprar-espacio{background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-weight:700;cursor:pointer;font-size:18px;width:100%;max-width:320px;box-shadow:0 4px 0 #005EA6;transition:all .2s}
-    .btn-comprar-espacio:hover{transform:translateY(-2px)}
-    .paquetes-detalle{margin-top:15px;font-size:14px;color:#555;line-height:1.8;display:none}
-    .paquete-opcion{background:#f5f5f5;border-radius:8px;padding:12px 15px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-    .btn-paquete{padding:8px 16px;background:#0070BA;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;transition:background .2s}
-    .btn-paquete:hover{background:#005EA6}
-
-    /* ESTADÍSTICAS */
-    .estadisticas{display:flex;justify-content:space-around;background:#fff;border-radius:16px;padding:20px 10px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.1);flex-wrap:wrap;gap:10px}
+    .estadisticas{display:flex;justify-content:space-around;background:#fff;border-radius:16px;padding:20px 10px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
     .dato{text-align:center;min-width:80px}
     .numero{font-size:26px;font-weight:700;color:#2E7D32}
     .etiqueta{font-size:13px;color:#777;margin-top:4px}
 
-    /* LOGROS */
-    .logros{background:#fff;border-radius:18px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
-    .logros-titulo{font-size:18px;color:#FF8F00;margin-bottom:15px;font-weight:700;display:flex;align-items:center;gap:8px}
-    .fila-logros{display:flex;flex-wrap:wrap;gap:12px}
-    .logro{text-align:center;padding:12px 10px;border-radius:12px;min-width:90px;background:#f5f5f5;opacity:.4;transition:all .3s}
-    .logro.conseguido{background:linear-gradient(135deg,#FFF3E0,#FFE082);opacity:1;box-shadow:0 2px 8px rgba(255,143,0,.2)}
-    .logro-icono{font-size:28px;margin-bottom:5px}
-    .logro-nombre{font-size:12px;color:#555;font-weight:600}
-
-    /* MOCHILA DE RECUERDOS DIARIOS */
-    .mochila{background:linear-gradient(145deg,#8D6E63,#6D4C41);border-radius:24px;padding:25px 20px;margin-bottom:25px;box-shadow:0 10px 25px rgba(0,0,0,.2);border:4px solid #5D4037}
+    .mochila{background:linear-gradient(145deg,#8D6E63,#6D4C41);border-radius:24px;padding:25px 20px;margin-bottom:25px;border:4px solid #5D4037}
     .etiqueta-mochila{background:#FFD54F;color:#5D4037;font-weight:700;padding:10px 20px;border-radius:10px;display:inline-block;margin-bottom:18px;font-size:18px}
     .contenido{background:#FFF8E1;border-radius:18px;padding:20px;min-height:200px;border:3px solid #FFCC80}
     .vacio{color:#999;font-style:italic;text-align:center;padding:40px 15px}
-    .recuerdo{background:#fff;border-radius:14px;padding:18px;margin-bottom:15px;border-left:5px solid #4CAF50;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-    .recuerdo h4{color:#2E7D32;margin-bottom:8px;font-size:16px}
-    .recuerdo p{color:#444;margin-bottom:10px;line-height:1.6}
+    .recuerdo{background:#fff;border-radius:14px;padding:18px;margin-bottom:15px;border-left:5px solid #4CAF50}
+    .recuerdo h4{color:#2E7D32;margin-bottom:8px}
     .recuerdo small{color:#888}
-    .foto-recuerdo{width:100%;height:180px;background:#E8F5E9;border-radius:10px;margin:10px 0;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px;overflow:hidden}
-    .foto-recuerdo img{width:100%;height:100%;object-fit:cover}
 
-    /* AGREGAR */
     .agregar{background:#fff;border-radius:18px;padding:22px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
     .agregar-titulo{font-size:18px;color:#33691E;margin-bottom:15px;font-weight:700}
-    .subir-foto{border:2px dashed #4CAF50;border-radius:12px;padding:20px;text-align:center;margin:12px 0;cursor:pointer;color:#4CAF50;font-weight:600;transition:all .3s}
-    .subir-foto:hover{background:#E8F5E9}
-    .nombre-foto{margin-top:8px;font-size:13px;color:#555}
+    .subir-foto{border:2px dashed #4CAF50;border-radius:12px;padding:20px;text-align:center;margin:12px 0;cursor:pointer;color:#4CAF50;font-weight:600}
   </style>
 </head>
 <body>
 
-<!-- PANTALLA LOGIN -->
 <div class="pantalla activa" id="pantallaLogin">
   <div class="caja-login">
     <div class="logo">🎒</div>
@@ -117,11 +69,11 @@
     <p class="subtitulo">Guarda cada momento especial, día a día 💛</p>
 
     <div class="pestañas">
-      <div class="pestaña activa" id="pestaIngresar" onclick="cambiarPestana('ingresar')">Ingresar</div>
-      <div class="pestaña" id="pestaRegistrar" onclick="cambiarPestana('registrar')">Crear Cuenta</div>
+      <div class="pestaña" id="pestaIngresar" onclick="cambiarPestana('ingresar')">Ingresar</div>
+      <div class="pestaña activa" id="pestaRegistrar" onclick="cambiarPestana('registrar')">Crear Cuenta</div>
     </div>
 
-    <div id="formIngresar">
+    <div id="formIngresar" style="display:none;">
       <div class="campo">
         <label>Usuario</label>
         <input type="text" id="loginUsuario" placeholder="Escribe tu usuario">
@@ -134,10 +86,10 @@
       <div class="mensaje" id="msgLogin"></div>
     </div>
 
-    <div id="formRegistrar" style="display:none;">
+    <div id="formRegistrar">
       <div class="campo">
         <label>Usuario</label>
-        <input type="text" id="regUsuario" placeholder="Elige tu usuario">
+        <input type="text" id="regUsuario" placeholder="Ej: Jose">
       </div>
       <div class="campo">
         <label>Contraseña</label>
@@ -149,10 +101,9 @@
   </div>
 </div>
 
-<!-- PANTALLA PRINCIPAL -->
 <div class="pantalla" id="pantallaApp">
   <div class="cabecera">
-    <div class="avatar-actual" id="avatarMostrar" onclick="alternarAvatares()">
+    <div class="avatar-actual">
       <img src="https://images.unsplash.com/photo-1511963509057-7f3a30099242?w=150&q=80" alt="Avatar">
     </div>
     <span class="usuario" id="nombreUsuario">Usuario</span>
@@ -164,98 +115,33 @@
     <p>Guarda, recuerda y valora cada día ✨</p>
   </div>
 
-  <div class="seleccion-avatares" id="cajaAvatares">
-    <h3 class="avatares-titulo">🎭 Elige tu Avatar</h3>
-    <div class="cuadricula-avatares" id="listaAvatares"></div>
-    <button class="cerrar-avatares" onclick="alternarAvatares()">Cerrar</button>
-  </div>
-
   <div class="barra-espacio">
     <div class="barra-fondo"><div class="barra-lleno" id="barraUso" style="width:0%"></div></div>
-    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos (límite gratis)</div>
-    <div class="aviso-limite" id="avisoLimite">⚠️ Límite alcanzado — compra espacio para seguir guardando</div>
-  </div>
-
-  <div class="comprar-espacio">
-    <button class="btn-comprar-espacio" onclick="alternarPaquetes()">💳 Comprar Espacio</button>
-    <div class="paquetes-detalle" id="listaPaquetes">
-      <p style="font-weight:bold;margin-bottom:10px;">Elige tu paquete:</p>
-      <div class="paquete-opcion">
-        <div><strong>Básico</strong><br>+15 recuerdos — $1.00 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(1)">Pagar con PayPal</button>
-      </div>
-      <div class="paquete-opcion">
-        <div><strong>⭐ Recomendado</strong><br>+40 recuerdos — $2.00 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(2)">Pagar con PayPal</button>
-      </div>
-      <div class="paquete-opcion">
-        <div><strong>Premium</strong><br>+100 recuerdos — $3.00 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(3)">Pagar con PayPal</button>
-      </div>
-      <p style="margin-top:12px;font-size:12px;color:#777;">🔒 Pago seguro. Después de pagar avísame ✅</p>
-    </div>
+    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos</div>
   </div>
 
   <div class="estadisticas">
     <div class="dato"><div class="numero" id="totalRecuerdos">0</div><div class="etiqueta">Recuerdos</div></div>
     <div class="dato"><div class="numero" id="limiteTotal">20</div><div class="etiqueta">Capacidad</div></div>
-    <div class="dato"><div class="numero" id="totalFotos">0</div><div class="etiqueta">Fotos</div></div>
-    <div class="dato"><div class="numero" id="diasActivos">1</div><div class="etiqueta">Días</div></div>
-  </div>
-
-  <div class="logros">
-    <h3 class="logros-titulo">🏆 Mis Logros</h3>
-    <div class="fila-logros">
-      <div class="logro" id="logro1"><div class="logro-icono">🌟</div><div class="logro-nombre">Primer recuerdo</div></div>
-      <div class="logro" id="logro2"><div class="logro-icono">📸</div><div class="logro-nombre">Primera foto</div></div>
-      <div class="logro" id="logro3"><div class="logro-icono">🔥</div><div class="logro-nombre">5 recuerdos</div></div>
-      <div class="logro" id="logro4"><div class="logro-icono">💎</div><div class="logro-nombre">10 recuerdos</div></div>
-      <div class="logro" id="logro5"><div class="logro-icono">👑</div><div class="logro-nombre">20 recuerdos</div></div>
-      <div class="logro" id="logro6"><div class="logro-icono">📅</div><div class="logro-nombre">7 días seguidos</div></div>
-    </div>
   </div>
 
   <div class="mochila">
     <span class="etiqueta-mochila">🎒 Mis Recuerdos Diarios</span>
     <div class="contenido" id="contenidoMochila">
-      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo y empieza tu historia! ✨</p>
+      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>
     </div>
   </div>
 
   <div class="agregar">
     <p class="agregar-titulo">✏️ Agregar recuerdo de hoy</p>
-    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo...">
-    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy? Escribe tu recuerdo aquí..."></textarea>
-    <label class="subir-foto" for="fotoInput">
-      📷 Haz clic para subir una foto del día
-      <input type="file" id="fotoInput" accept="image/*" style="display:none;" onchange="cargarFoto(event)">
-      <div class="nombre-foto" id="nombreFoto">Ninguna foto seleccionada</div>
-    </label>
-    <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
+    <input type="text" id="tituloRecuerdo" placeholder="Título...">
+    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy?"></textarea>
+    <button class="btn" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
   </div>
 </div>
 
 <script>
-let usuarioActivo = null, fotoBase64 = null;
-const USUARIO_PAYPAL = 'TU_USUARIO_AQUI'; // ← Pon tu usuario de PayPal aquí
-
-const avatares = [
-  {id:'avatar0',nombre:'Inicial',requiere:null,foto:'https://images.unsplash.com/photo-1511963509057-7f3a30099242?w=150&q=80'},
-  {id:'avatar1',nombre:'Minecraft',requiere:1,foto:'https://images.unsplash.com/photo-1587573089734-09cb69c01e36?w=150&q=80'},
-  {id:'avatar2',nombre:'Mario',requiere:2,foto:'https://images.unsplash.com/photo-1612036741808-90d45c4a4b50?w=150&q=80'},
-  {id:'avatar3',nombre:'Spider-Man',requiere:3,foto:'https://images.unsplash.com/photo-1635805737707-3e68f66d1d5b?w=150&q=80'},
-  {id:'avatar4',nombre:'Batman',requiere:4,foto:'https://images.unsplash.com/photo-1617305550520-4542c5e8b2a4?w=150&q=80'},
-  {id:'avatar5',nombre:'Superman',requiere:5,foto:'https://images.unsplash.com/photo-1618336758459-806608a1a46c?w=150&q=80'},
-  {id:'avatar6',nombre:'Constante',requiere:6,foto:'https://images.unsplash.com/photo-1542909168-85c870f8f028?w=150&q=80'},
-  {id:'avatar7',nombre:'Campeón',requiere:'todos',foto:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&q=80'}
-];
-
-function irAPayPal(opcion){
-  if(!usuarioActivo){alert('🔑 Inicia sesión primero');return;}
-  const m={1:1,2:2,3:3},monto=m[opcion];
-  window.open(https://paypal.me/${USUARIO_PAYPAL}/${monto},'_blank');
-  alert(✅ Abriendo PayPal...\nMonto: $${monto}.00 USD);
-}
+let usuarioActivo = null;
 
 function cambiarPestana(p){
   document.getElementById('pestaIngresar').classList.toggle('activa',p==='ingresar');
@@ -270,14 +156,37 @@ function registrar(){
   const u=document.getElementById('regUsuario').value.trim();
   const c=document.getElementById('regClave').value;
   const m=document.getElementById('msgRegistro');
-  if(!u||!c){m.className='mensaje error';m.textContent='Completa todos los campos ✏️';return;}
-  if(c.length<4){m.className='mensaje error';m.textContent='Mínimo 4 caracteres 🔒';return;}
+  
+  if(!u||!c){
+    m.className='mensaje error';
+    m.textContent='⚠️ Escribe usuario y contraseña';
+    return;
+  }
+  if(c.length<4){
+    m.className='mensaje error';
+    m.textContent='⚠️ Contraseña muy corta (mínimo 4)';
+    return;
+  }
+
   const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(cuentas[u]){m.className='mensaje error';m.textContent='Ese usuario ya existe 👀';return;}
-  cuentas[u]={clave:c,recuerdos:[],logros:[],limite:20,avatar:'avatar0',creado:new Date().toISOString().slice(0,10)};
+  if(cuentas[u]){
+    m.className='mensaje error';
+    m.textContent='⚠️ Ese usuario ya existe, ve a Ingresar';
+    return;
+  }
+
+  cuentas[u]={
+    clave:c,
+    recuerdos:[],
+    limite:20,
+    creado:new Date().toISOString().slice(0,10)
+  };
+  
   localStorage.setItem('mochilaCuentas',JSON.stringify(cuentas));
-  m.className='mensaje exito';m.textContent='✅ ¡Cuenta creada con éxito!';
-  setTimeout(()=>cambiarPestana('ingresar'),2500);
+  m.className='mensaje exito';
+  m.textContent='✅ ¡Cuenta creada! Ve a Ingresar';
+  
+  setTimeout(()=>cambiarPestana('ingresar'),2000);
 }
 
 function iniciarSesion(){
@@ -285,63 +194,81 @@ function iniciarSesion(){
   const c=document.getElementById('loginClave').value;
   const m=document.getElementById('msgLogin');
   const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(!cuentas[u]||cuentas[u].clave!==c){m.className='mensaje error';m.textContent='Usuario o contraseña incorrectos ❌';return;}
+  
+  if(!cuentas[u]){
+    m.className='mensaje error';
+    m.textContent='❌ No existe ese usuario → Crea cuenta primero';
+    return;
+  }
+  if(cuentas[u].clave!==c){
+    m.className='mensaje error';
+    m.textContent='❌ Contraseña incorrecta';
+    return;
+  }
+
   usuarioActivo=u;
   document.getElementById('nombreUsuario').textContent='👤 '+u;
-  const av=avatares.find(a=>a.id===(cuentas[u].avatar||'avatar0'));
-  if(av)document.getElementById('avatarMostrar').innerHTML=<img src="${av.foto}" alt="Avatar">;
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaApp').classList.add('activa');
   cargarDatos();
 }
 
 function cerrarSesion(){
-  usuarioActivo=null;fotoBase64=null;
+  usuarioActivo=null;
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaLogin').classList.add('activa');
-  document.getElementById('loginUsuario').value='';
-  document.getElementById('loginClave').value='';
 }
 
-function alternarAvatares(){
-  const c=document.getElementById('cajaAvatares');
-  c.style.display=c.style.display==='block'?'none':'block';
-  if(c.style.display==='block')renderizarAvatares();
-}
-
-function alternarPaquetes(){
-  const l=document.getElementById('listaPaquetes');
-  l.style.display=l.style.display==='block'?'none':'block';
-}
-
-function renderizarAvatares(){
+function cargarDatos(){
   const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  const logros=cuentas[usuarioActivo].logros||[];
-  const avSel=cuentas[usuarioActivo].avatar||'avatar0';
-  const cont=document.getElementById('listaAvatares');cont.innerHTML='';
-  avatares.forEach(av=>{
-    let desbloq=false;
-    if(av.requiere===null)desbloq=true;
-    else if(av.requiere==='todos')desbloq=logros.length>=6;
-    else desbloq=logros.includes(av.requiere);
-    const div=document.createElement('div');
-    div.className=avatar-opcion ${desbloq?'desbloqueado':'bloqueado'} ${avSel===av.id?'seleccionado':''};
-    if(desbloq){
-      div.onclick=()=>elegirAvatar(av.id,av.foto);
-      div.innerHTML=<div class="avatar-foto"><img src="${av.foto}" alt="${av.nombre}"></div><div class="avatar-nombre">${av.nombre}</div>;
-    }else{
-      div.innerHTML=<div class="avatar-foto"><img src="${av.foto}" alt="${av.nombre}" style="filter:grayscale(100%)"></div><div class="avatar-nombre">${av.nombre}</div><div class="avatar-condicion">Completa logro</div>;
-    }
-    cont.appendChild(div);
+  const datos=cuentas[usuarioActivo];
+  const recuerdos=datos.recuerdos||[];
+  const limite=datos.limite||20;
+
+  document.getElementById('barraUso').style.width=Math.min(100,(recuerdos.length/limite)*100)+'%';
+  document.getElementById('textoEspacio').textContent=recuerdos.length+' de '+limite+' recuerdos';
+  document.getElementById('totalRecuerdos').textContent=recuerdos.length;
+  document.getElementById('limiteTotal').textContent=limite;
+
+  const caja=document.getElementById('contenidoMochila');
+  if(recuerdos.length===0){
+    caja.innerHTML='<p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>';
+    return;
+  }
+  caja.innerHTML=recuerdos.map(r=>
+    '<div class="recuerdo"><h4>📌 '+r.titulo+'</h4><p>'+r.detalle+'</p><small>📅 '+r.fecha+'</small></div>'
+  ).join('');
+}
+
+function guardarRecuerdo(){
+  if(!usuarioActivo)return alert('🔑 Inicia sesión primero');
+  
+  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  if(!cuentas[usuarioActivo].recuerdos)cuentas[usuarioActivo].recuerdos=[];
+  
+  const limite=cuentas[usuarioActivo].limite||20;
+  if(cuentas[usuarioActivo].recuerdos.length>=limite){
+    alert('⚠️ Límite alcanzado');
+    return;
+  }
+
+  const tit=document.getElementById('tituloRecuerdo').value.trim()||'Sin título';
+  const det=document.getElementById('detalleRecuerdo').value.trim();
+
+  cuentas[usuarioActivo].recuerdos.unshift({
+    titulo:tit,
+    detalle:det,
+    fecha:new Date().toLocaleString('es-EC')
   });
-}
 
-function elegirAvatar(id,foto){
-  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  cuentas[usuarioActivo].avatar=id;
   localStorage.setItem('mochilaCuentas',JSON.stringify(cuentas));
-  document.getElementById('avatarMostrar').innerHTML=<img src="${foto}" alt="Avatar">;
-  alternarAvatares();
+  
+  document.getElementById('tituloRecuerdo').value='';
+  document.getElementById('detalleRecuerdo').value='';
+  
+  cargarDatos();
+  alert('✅ Recuerdo guardado');
 }
-
-function cargarFoto(
+</script>
+</body>
+</html>
