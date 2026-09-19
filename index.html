@@ -41,6 +41,20 @@
     .barra-fondo{height:12px;background:#E0E0E0;border-radius:6px;overflow:hidden}
     .barra-lleno{height:100%;background:linear-gradient(to right,#4CAF50,#FFC107,#E53935);border-radius:6px;transition:width .4s}
     .texto-barra{font-size:14px;margin-top:8px;color:#333;font-weight:600}
+    .aviso-limite{color:#E53935;font-weight:700;margin-top:10px;font-size:14px;padding:8px;background:#FFEBEE;border-radius:8px;display:none}
+
+    .comprar-espacio{background:#fff;border-radius:18px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center}
+    .btn-comprar-espacio{background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-weight:700;cursor:pointer;font-size:18px;width:100%;max-width:340px;box-shadow:0 4px 0 #005EA6;transition:all .2s}
+    .btn-comprar-espacio:hover{transform:translateY(-2px)}
+    .paquetes-detalle{margin-top:20px;display:none;text-align:left}
+    .paquete-opcion{background:linear-gradient(135deg,#F5F5F5,#FAFAFA);border-radius:12px;padding:16px 18px;margin:12px 0;border-left:4px solid #009cde;transition:transform .2s}
+    .paquete-opcion:hover{transform:scale(1.01);box-shadow:0 3px 10px rgba(0,156,222,.15)}
+    .paquete-nombre{font-weight:700;font-size:17px;color:#0070BA;margin-bottom:4px}
+    .paquete-info{font-size:14px;color:#555;margin-bottom:10px;line-height:1.5}
+    .paquete-precio{font-size:22px;font-weight:700;color:#2E7D32;margin-bottom:10px}
+    .btn-paquete{padding:11px 20px;background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;width:100%;max-width:260px;box-shadow:0 3px 0 #005EA6;transition:all .2s}
+    .btn-paquete:hover{transform:translateY(-2px)}
+    .cerrar-paquetes{margin-top:15px;background:#E0E0E0;color:#444;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;width:100%}
 
     .estadisticas{display:flex;justify-content:space-around;background:#fff;border-radius:16px;padding:20px 10px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
     .dato{text-align:center;min-width:80px}
@@ -54,10 +68,13 @@
     .recuerdo{background:#fff;border-radius:14px;padding:18px;margin-bottom:15px;border-left:5px solid #4CAF50}
     .recuerdo h4{color:#2E7D32;margin-bottom:8px}
     .recuerdo small{color:#888}
+    .recuerdo-foto{width:100%;max-height:300px;object-fit:cover;border-radius:10px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 
     .agregar{background:#fff;border-radius:18px;padding:22px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
     .agregar-titulo{font-size:18px;color:#33691E;margin-bottom:15px;font-weight:700}
     .subir-foto{border:2px dashed #4CAF50;border-radius:12px;padding:20px;text-align:center;margin:12px 0;cursor:pointer;color:#4CAF50;font-weight:600}
+    .foto-preview{max-width:100%;max-height:200px;border-radius:10px;margin-top:10px;display:none}
+    .btn:disabled{background:#ccc;cursor:not-allowed;box-shadow:none;transform:none}
   </style>
 </head>
 <body>
@@ -75,8 +92,8 @@
 
     <div id="formIngresar" style="display:none;">
       <div class="campo">
-        <label>Usuario</label>
-        <input type="text" id="loginUsuario" placeholder="Escribe tu usuario">
+        <label>Usuario o Correo</label>
+        <input type="text" id="loginUsuario" placeholder="Tu usuario o correo">
       </div>
       <div class="campo">
         <label>Contraseña</label>
@@ -88,8 +105,12 @@
 
     <div id="formRegistrar">
       <div class="campo">
+        <label>Correo Electrónico</label>
+        <input type="email" id="regCorreo" placeholder="tu@correo.com">
+      </div>
+      <div class="campo">
         <label>Usuario</label>
-        <input type="text" id="regUsuario" placeholder="Ej: Jose">
+        <input type="text" id="regUsuario" placeholder="Elige tu nombre de usuario">
       </div>
       <div class="campo">
         <label>Contraseña</label>
@@ -117,7 +138,40 @@
 
   <div class="barra-espacio">
     <div class="barra-fondo"><div class="barra-lleno" id="barraUso" style="width:0%"></div></div>
-    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos</div>
+    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos (límite gratis)</div>
+    <div class="aviso-limite" id="avisoLimite">⚠️ Límite alcanzado — compra más espacio abajo</div>
+  </div>
+
+  <div class="comprar-espacio">
+    <button class="btn-comprar-espacio" onclick="alternarPaquetes()">💳 Comprar Más Recuerdos</button>
+    
+    <div class="paquetes-detalle" id="listaPaquetes">
+      <p style="text-align:center;font-weight:bold;margin-bottom:15px;font-size:16px;">📦 Elige tu paquete:</p>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥉 Básico</div>
+        <div class="paquete-info">+20 recuerdos adicionales</div>
+        <div class="paquete-precio">$1.00 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(1)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥈 Estándar</div>
+        <div class="paquete-info">+40 recuerdos adicionales</div>
+        <div class="paquete-precio">$1.50 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(2)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥇 Premium ⭐ Recomendado</div>
+        <div class="paquete-info">+80 recuerdos adicionales</div>
+        <div class="paquete-precio">$3.00 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(3)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <p style="text-align:center;margin-top:15px;font-size:12px;color:#777;">🔒 Pago seguro. Después de pagar avísame para activar ✅</p>
+      <button class="cerrar-paquetes" onclick="alternarPaquetes()">Cerrar</button>
+    </div>
   </div>
 
   <div class="estadisticas">
@@ -134,140 +188,243 @@
 
   <div class="agregar">
     <p class="agregar-titulo">✏️ Agregar recuerdo de hoy</p>
-    <input type="text" id="tituloRecuerdo" placeholder="Título...">
-    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy?"></textarea>
-    <button class="btn" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
+    
+    <div class="campo">
+      <label>Título del recuerdo</label>
+      <input type="text" id="tituloRecuerdo" placeholder="Escribe un título...">
+    </div>
+    
+    <div class="campo">
+      <label>Descripción</label>
+      <textarea id="detalleRecuerdo" rows="3" placeholder="¿Qué pasó hoy? Cuéntalo aquí..."></textarea>
+    </div>
+    
+    <div class="campo">
+      <label>📸 Subir Foto (opcional)</label>
+      <div class="subir-foto" onclick="document.getElementById('fotoRecuerdo').click()">
+        📷 Toca para seleccionar una foto
+        <input type="file" id="fotoRecuerdo" accept="image/*" style="display:none" onchange="previsualizarFoto(event)">
+      </div>
+      <img id="vistaPrevia" class="foto-preview" alt="Vista previa de la foto">
+    </div>
+    
+    <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
   </div>
 </div>
 
 <script>
 let usuarioActivo = null;
+let fotoBase64 = null;
+
+// ✅ TU ENLACE DE PAYPAL YA ESTÁ PUESTO 👇
+const ENLACE_PAYPAL_BASE = 'https://paypal.me/arestapias';
+
+function irAPayPal(opcion){
+  if(!usuarioActivo){alert('🔑 Inicia sesión primero');return;}
+  
+  const paquetes = {
+    1: {monto: 1, cantidad: 20},
+    2: {monto: 1.50, cantidad: 40},
+    3: {monto: 3, cantidad: 80}
+  };
+  
+  const p = paquetes[opcion];
+  window.open(${ENLACE_PAYPAL_BASE}/${p.monto}, '_blank');
+  
+  alert(✅ Abriendo PayPal...\n\nPaquete: +${p.cantidad} recuerdos\nMonto: $${p.monto} USD\n\n👉 Después de pagar, avísame para activar ✅);
+}
+
+function alternarPaquetes(){
+  const caja = document.getElementById('listaPaquetes');
+  caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
+}
 
 function cambiarPestana(p){
-  document.getElementById('pestaIngresar').classList.toggle('activa',p==='ingresar');
-  document.getElementById('pestaRegistrar').classList.toggle('activa',p==='registrar');
-  document.getElementById('formIngresar').style.display=p==='ingresar'?'block':'none';
-  document.getElementById('formRegistrar').style.display=p==='registrar'?'block':'none';
-  document.getElementById('msgLogin').textContent='';
-  document.getElementById('msgRegistro').textContent='';
+  document.getElementById('pestaIngresar').classList.toggle('activa', p==='ingresar');
+  document.getElementById('pestaRegistrar').classList.toggle('activa', p==='registrar');
+  document.getElementById('formIngresar').style.display = p==='ingresar' ? 'block' : 'none';
+  document.getElementById('formRegistrar').style.display = p==='registrar' ? 'block' : 'none';
+  document.getElementById('msgLogin').textContent = '';
+  document.getElementById('msgRegistro').textContent = '';
+}
+
+function validarCorreo(correo){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 }
 
 function registrar(){
-  const u=document.getElementById('regUsuario').value.trim();
-  const c=document.getElementById('regClave').value;
-  const m=document.getElementById('msgRegistro');
+  const correo = document.getElementById('regCorreo').value.trim();
+  const u = document.getElementById('regUsuario').value.trim();
+  const c = document.getElementById('regClave').value;
+  const m = document.getElementById('msgRegistro');
   
-  if(!u||!c){
+  if(!correo || !u || !c){
     m.className='mensaje error';
-    m.textContent='⚠️ Escribe usuario y contraseña';
+    m.textContent='⚠️ Completa todos los campos';
     return;
   }
-  if(c.length<4){
+  if(!validarCorreo(correo)){
     m.className='mensaje error';
-    m.textContent='⚠️ Contraseña muy corta (mínimo 4)';
+    m.textContent='⚠️ Escribe un correo válido (ej: nombre@gmail.com)';
+    return;
+  }
+  if(c.length < 4){
+    m.className='mensaje error';
+    m.textContent='⚠️ Contraseña muy corta (mínimo 4 caracteres)';
     return;
   }
 
-  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  
+  for(let nom in cuentas){
+    if(cuentas[nom].correo === correo){
+      m.className='mensaje error';
+      m.textContent='⚠️ Este correo ya está registrado';
+      return;
+    }
+  }
   if(cuentas[u]){
     m.className='mensaje error';
-    m.textContent='⚠️ Ese usuario ya existe, ve a Ingresar';
+    m.textContent='⚠️ Este nombre de usuario ya existe';
     return;
   }
 
-  cuentas[u]={
-    clave:c,
-    recuerdos:[],
-    limite:20,
-    creado:new Date().toISOString().slice(0,10)
+  cuentas[u] = {
+    correo: correo,
+    clave: c,
+    recuerdos: [],
+    limite: 20,
+    creado: new Date().toISOString().slice(0,10)
   };
   
-  localStorage.setItem('mochilaCuentas',JSON.stringify(cuentas));
+  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
   m.className='mensaje exito';
-  m.textContent='✅ ¡Cuenta creada! Ve a Ingresar';
+  m.textContent='✅ ¡Cuenta creada con éxito! Ve a Ingresar';
   
-  setTimeout(()=>cambiarPestana('ingresar'),2000);
+  setTimeout(()=>cambiarPestana('ingresar'), 2000);
 }
 
 function iniciarSesion(){
-  const u=document.getElementById('loginUsuario').value.trim();
-  const c=document.getElementById('loginClave').value;
-  const m=document.getElementById('msgLogin');
-  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  const entrada = document.getElementById('loginUsuario').value.trim();
+  const c = document.getElementById('loginClave').value;
+  const m = document.getElementById('msgLogin');
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
   
-  if(!cuentas[u]){
+  let encontrado = null;
+  for(let nom in cuentas){
+    if(nom === entrada || cuentas[nom].correo === entrada){
+      encontrado = nom;
+      break;
+    }
+  }
+  
+  if(!encontrado){
     m.className='mensaje error';
-    m.textContent='❌ No existe ese usuario → Crea cuenta primero';
+    m.textContent='❌ No encontrado → Crea cuenta primero';
     return;
   }
-  if(cuentas[u].clave!==c){
+  if(cuentas[encontrado].clave !== c){
     m.className='mensaje error';
     m.textContent='❌ Contraseña incorrecta';
     return;
   }
 
-  usuarioActivo=u;
-  document.getElementById('nombreUsuario').textContent='👤 '+u;
+  usuarioActivo = encontrado;
+  document.getElementById('nombreUsuario').textContent = '👤 ' + encontrado;
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaApp').classList.add('activa');
   cargarDatos();
 }
 
 function cerrarSesion(){
-  usuarioActivo=null;
+  usuarioActivo = null;
+  fotoBase64 = null;
+  document.getElementById('vistaPrevia').style.display = 'none';
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaLogin').classList.add('activa');
 }
 
+function previsualizarFoto(event){
+  const archivo = event.target.files[0];
+  if(!archivo) return;
+  
+  const lector = new FileReader();
+  lector.onload = function(e){
+    fotoBase64 = e.target.result;
+    const vista = document.getElementById('vistaPrevia');
+    vista.src = fotoBase64;
+    vista.style.display = 'block';
+  };
+  lector.readAsDataURL(archivo);
+}
+
 function cargarDatos(){
-  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  const datos=cuentas[usuarioActivo];
-  const recuerdos=datos.recuerdos||[];
-  const limite=datos.limite||20;
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  const datos = cuentas[usuarioActivo];
+  const recuerdos = datos.recuerdos || [];
+  const limite = datos.limite || 20;
+  
+  const porcentaje = Math.min(100, (recuerdos.length / limite) * 100);
+  document.getElementById('barraUso').style.width = porcentaje + '%';
+  document.getElementById('textoEspacio').textContent = recuerdos.length + ' de ' + limite + ' recuerdos';
+  
+  const llegoLimite = recuerdos.length >= limite;
+  document.getElementById('avisoLimite').style.display = llegoLimite ? 'block' : 'none';
+  
+  const btnGuardar = document.getElementById('btnGuardar');
+  btnGuardar.disabled = llegoLimite;
+  btnGuardar.textContent = llegoLimite ? '⚠️ Límite alcanzado — Compra espacio' : '💾 Guardar Recuerdo';
 
-  document.getElementById('barraUso').style.width=Math.min(100,(recuerdos.length/limite)*100)+'%';
-  document.getElementById('textoEspacio').textContent=recuerdos.length+' de '+limite+' recuerdos';
-  document.getElementById('totalRecuerdos').textContent=recuerdos.length;
-  document.getElementById('limiteTotal').textContent=limite;
+  document.getElementById('totalRecuerdos').textContent = recuerdos.length;
+  document.getElementById('limiteTotal').textContent = limite;
 
-  const caja=document.getElementById('contenidoMochila');
-  if(recuerdos.length===0){
-    caja.innerHTML='<p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>';
+  const caja = document.getElementById('contenidoMochila');
+  if(recuerdos.length === 0){
+    caja.innerHTML = '<p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>';
     return;
   }
-  caja.innerHTML=recuerdos.map(r=>
-    '<div class="recuerdo"><h4>📌 '+r.titulo+'</h4><p>'+r.detalle+'</p><small>📅 '+r.fecha+'</small></div>'
-  ).join('');
+  
+  caja.innerHTML = recuerdos.map(r=>{
+    let html = '<div class="recuerdo"><h4>📌 '+r.titulo+'</h4>';
+    if(r.detalle) html += '<p>'+r.detalle+'</p>';
+    if(r.foto) html += '<img src="'+r.foto+'" class="recuerdo-foto" alt="Foto del recuerdo">';
+    html += '<small>📅 '+r.fecha+'</small></div>';
+    return html;
+  }).join('');
 }
 
 function guardarRecuerdo(){
-  if(!usuarioActivo)return alert('🔑 Inicia sesión primero');
+  if(!usuarioActivo) return alert('🔑 Inicia sesión primero');
   
-  const cuentas=JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(!cuentas[usuarioActivo].recuerdos)cuentas[usuarioActivo].recuerdos=[];
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  if(!cuentas[usuarioActivo].recuerdos) cuentas[usuarioActivo].recuerdos = [];
   
-  const limite=cuentas[usuarioActivo].limite||20;
-  if(cuentas[usuarioActivo].recuerdos.length>=limite){
-    alert('⚠️ Límite alcanzado');
+  const limite = cuentas[usuarioActivo].limite || 20;
+  if(cuentas[usuarioActivo].recuerdos.length >= limite){
+    alert('⚠️ Límite de ' + limite + ' recuerdos alcanzado\nCompra más espacio abajo 💳');
     return;
   }
 
-  const tit=document.getElementById('tituloRecuerdo').value.trim()||'Sin título';
-  const det=document.getElementById('detalleRecuerdo').value.trim();
+  const tit = document.getElementById('tituloRecuerdo').value.trim() || 'Sin título';
+  const det = document.getElementById('detalleRecuerdo').value.trim();
 
   cuentas[usuarioActivo].recuerdos.unshift({
-    titulo:tit,
-    detalle:det,
-    fecha:new Date().toLocaleString('es-EC')
+    titulo: tit,
+    detalle: det,
+    foto: fotoBase64,
+    fecha: new Date().toLocaleString('es-EC')
   });
 
-  localStorage.setItem('mochilaCuentas',JSON.stringify(cuentas));
+  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
   
-  document.getElementById('tituloRecuerdo').value='';
-  document.getElementById('detalleRecuerdo').value='';
+  document.getElementById('tituloRecuerdo').value = '';
+  document.getElementById('detalleRecuerdo').value = '';
+  document.getElementById('fotoRecuerdo').value = '';
+  document.getElementById('vistaPrevia').style.display = 'none';
+  fotoBase64 = null;
   
   cargarDatos();
-  alert('✅ Recuerdo guardado');
+  alert('✅ Recuerdo guardado con éxito');
 }
 </script>
 </body>
