@@ -2,228 +2,256 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🎒 Mi Mochila de Recuerdos</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     body {
       background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%);
-      min-height: 100vh;
-      padding: 20px 15px;
+      min-height: 100vh; padding: 15px;
     }
-
-    /* === PANTALLAS === */
     .pantalla { display: none; }
     .activa { display: block; }
 
-    /* === LOGIN / REGISTRO === */
-    .caja-cuenta {
-      background: white;
-      border-radius: 20px;
-      padding: 30px 25px;
-      max-width: 400px;
-      margin: 40px auto;
+    /* === INICIO === */
+    .caja-login {
+      background: white; border-radius: 20px; padding: 30px 25px;
+      max-width: 420px; margin: 40px auto;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
-    .logo { text-align: center; font-size: 45px; margin-bottom: 10px; }
+    .logo { text-align: center; font-size: 50px; margin-bottom: 5px; }
     .titulo { text-align: center; font-size: 24px; color: #2E7D32; margin-bottom: 5px; }
     .subtitulo { text-align: center; color: #666; margin-bottom: 25px; font-size: 14px; }
     .pestañas { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
-    .pestaña { flex: 1; padding: 12px; text-align: center; color: #888; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600; }
+    .pestaña {
+      flex: 1; padding: 12px; text-align: center; color: #888;
+      cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600;
+    }
     .pestaña.activa { color: #2E7D32; border-bottom-color: #4CAF50; }
     .campo { margin-bottom: 15px; }
     label { display: block; margin-bottom: 5px; font-weight: 600; color: #444; font-size: 14px; }
-    input { width: 100%; padding: 14px 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; outline: none; transition: border 0.2s; }
-    input:focus { border-color: #4CAF50; }
-    .btn-principal {
+    input, textarea {
+      width: 100%; padding: 14px 12px; border: 2px solid #ddd;
+      border-radius: 10px; font-size: 16px; outline: none;
+    }
+    input:focus, textarea:focus { border-color: #4CAF50; }
+    .btn {
       width: 100%; padding: 14px;
       background: linear-gradient(to bottom, #66BB6A, #43A047);
       color: white; border: none; border-radius: 10px;
       font-size: 17px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 4px 0 #2E7D32; margin-top: 5px;
+      box-shadow: 0 4px 0 #2E7D32; margin-top: 5px; transition: all 0.2s;
     }
-    .btn-principal:active { transform: translateY(2px); box-shadow: 0 2px 0 #2E7D32; }
-    .mensaje { margin-top: 15px; text-align: center; font-size: 14px; min-height: 20px; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled, .btn-bloqueado {
+      background: #ccc; cursor: not-allowed; box-shadow: none; transform: none;
+    }
+    .mensaje { margin-top: 15px; text-align: center; font-size: 14px; min-height: 22px; }
     .error { color: #E53935; }
     .exito { color: #2E7D32; }
 
-    /* === CABECERA === */
+    /* === CABECERA CON AVATAR === */
     .cabecera {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+      display: flex; align-items: center; gap: 12px;
+      background: white; padding: 12px 18px; border-radius: 14px;
+      margin-bottom: 20px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
-    .usuario {
-      background: white; padding: 8px 14px; border-radius: 20px;
-      font-weight: bold; color: #2E7D32; font-size: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .avatar-actual {
+      width: 45px; height: 45px; border-radius: 50%;
+      background: linear-gradient(135deg, #4CAF50, #81C784);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; border: 3px solid #2E7D32;
+      cursor: pointer; transition: transform 0.3s;
     }
-    .btn-salir, .btn-tiendita {
-      border: none; padding: 8px 14px; border-radius: 8px;
-      font-weight: bold; cursor: pointer; font-size: 14px;
+    .avatar-actual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .btn-salir { background: #EF5350; color: white; }
-    .btn-tiendita { background: #FFC107; color: #333; }
+    .avatar-actual:hover { transform: scale(1.1); }
+    .usuario { flex: 1; font-weight: bold; color: #2E7D32; font-size: 15px; }
+    .btn-salir {
+      background: #EF5350; color: white; border: none;
+      padding: 9px 15px; border-radius: 10px; font-weight: bold;
+      cursor: pointer; font-size: 14px;
+    }
 
-    /* === ESPACIO DISPONIBLE === */
+    /* === SELECCIÓN DE AVATARES === */
+    .seleccion-avatares {
+      background: white; border-radius: 18px; padding: 22px; margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none;
+    }
+    .avatares-titulo {
+      font-size: 18px; color: #FF8F00; margin-bottom: 15px;
+      font-weight: bold; display: flex; align-items: center; gap: 8px;
+    }
+    .cuadricula-avatares {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 15px;
+    }
+    .avatar-opcion {
+      text-align: center; padding: 15px 10px; border-radius: 14px;
+      border: 3px solid transparent; transition: all 0.3s;
+      cursor: pointer;
+    }
+    .avatar-opcion.seleccionado {
+      border-color: #FF8F00; background: #FFF3E0; box-shadow: 0 3px 10px rgba(255,143,0,0.25);
+    }
+    .avatar-opcion.desbloqueado:hover { transform: scale(1.05); background: #FFF8E1; }
+    .avatar-opcion.bloqueado { opacity: 0.4; cursor: not-allowed; background: #eee; }
+    .avatar-foto {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      overflow: hidden;
+      border: 3px solid #FFCC80;
+    }
+    .avatar-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .avatar-nombre { font-size: 12px; font-weight: 600; color: #444; }
+    .avatar-condicion { font-size: 10px; color: #888; margin-top: 3px; }
+    .cerrar-avatares {
+      margin-top: 15px; background: #ddd; color: #444;
+      padding: 10px 20px; border: none; border-radius: 8px;
+      cursor: pointer; font-weight: bold; width: 100%;
+    }
+
+    /* === BARRA DE ESPACIO === */
     .barra-espacio {
-      background: white; border-radius: 12px; padding: 12px 15px;
-      margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: white; border-radius: 14px; padding: 15px; margin-bottom: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
     }
-    .etiqueta-espacio { font-size: 13px; color: #666; margin-bottom: 6px; }
-    .barra-fondo { height: 10px; background: #E0E0E0; border-radius: 5px; overflow: hidden; }
-    .barra-lleno { height: 100%; background: linear-gradient(to right, #4CAF50, #FFC107, #E53935); border-radius: 5px; transition: width 0.3s; }
-    .texto-espacio { font-size: 12px; margin-top: 5px; color: #555; }
+    .barra-fondo { height: 12px; background: #E0E0E0; border-radius: 6px; overflow: hidden; }
+    .barra-lleno {
+      height: 100%; background: linear-gradient(to right, #4CAF50, #FFC107, #E53935);
+      border-radius: 6px; transition: width 0.4s;
+    }
+    .texto-barra { font-size: 14px; margin-top: 8px; color: #333; font-weight: 600; }
     .aviso-limite {
-      background: #FFF3E0; border-left: 4px solid #FF9800;
-      padding: 12px; margin-bottom: 15px; border-radius: 6px;
-      font-size: 14px; color: #E65100;
+      color: #E53935; font-weight: bold; margin-top: 10px; font-size: 14px;
+      padding: 8px; background: #FFEBEE; border-radius: 8px; display: none;
     }
+
+    /* === COMPRAR ESPACIO con PayPal === */
+    .comprar-espacio {
+      background: white; border-radius: 18px; padding: 20px; margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;
+    }
+    .btn-comprar-espacio {
+      background: linear-gradient(to bottom, #009cde, #0070BA);
+      color: white; border: none; padding: 15px 30px;
+      border-radius: 12px; font-weight: bold; cursor: pointer;
+      font-size: 18px; width: 100%; max-width: 320px;
+      box-shadow: 0 4px 0 #005EA6; transition: all 0.2s;
+    }
+    .btn-comprar-espacio:hover { transform: translateY(-2px); }
+    .paquetes-detalle {
+      margin-top: 15px; font-size: 14px; color: #555; line-height: 1.8; display: none;
+    }
+    .paquete-opcion {
+      background: #f5f5f5; border-radius: 8px; padding: 12px 15px; margin: 10px 0;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .btn-paquete {
+      padding: 8px 16px; background: #0070BA; color: white; border: none;
+      border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn-paquete:hover { background: #005EA6; }
 
     /* === ESTADÍSTICAS === */
     .estadisticas {
       display: flex; justify-content: space-around; background: white;
-      border-radius: 14px; padding: 15px 10px; margin-bottom: 20px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      border-radius: 16px; padding: 20px 10px; margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px;
     }
-    .dato { text-align: center; }
-    .numero { font-size: 22px; font-weight: bold; color: #2E7D32; }
-    .etiqueta { font-size: 12px; color: #777; }
+    .dato { text-align: center; min-width: 80px; }
+    .numero { font-size: 26px; font-weight: bold; color: #2E7D32; }
+    .etiqueta { font-size: 13px; color: #777; margin-top: 4px; }
+
+    /* === LOGROS === */
+    .logros {
+      background: white; border-radius: 18px; padding: 20px; margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .logros-titulo {
+      font-size: 18px; color: #FF8F00; margin-bottom: 15px;
+      font-weight: bold; display: flex; align-items: center; gap: 8px;
+    }
+    .fila-logros { display: flex; flex-wrap: wrap; gap: 12px; }
+    .logro {
+      text-align: center; padding: 12px 10px; border-radius: 12px; min-width: 90px;
+      background: #f5f5f5; opacity: 0.4; transition: all 0.3s;
+    }
+    .logro.conseguido {
+      background: linear-gradient(135deg, #FFF3E0, #FFE082);
+      opacity: 1; box-shadow: 0 2px 8px rgba(255,143,0,0.2);
+    }
+    .logro-icono { font-size: 28px; margin-bottom: 5px; }
+    .logro-nombre { font-size: 12px; color: #555; font-weight: 600; }
 
     /* === MOCHILA === */
     .mochila {
       background: linear-gradient(145deg, #8D6E63, #6D4C41);
       border-radius: 24px; padding: 25px 20px; margin-bottom: 25px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 4px solid #5D4037;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 4px solid #5D4037;
     }
     .etiqueta-mochila {
       background: #FFD54F; color: #5D4037; font-weight: bold;
-      padding: 6px 14px; border-radius: 6px; display: inline-block;
-      margin-bottom: 15px; font-size: 14px;
+      padding: 8px 18px; border-radius: 8px; display: inline-block;
+      margin-bottom: 15px; font-size: 15px;
     }
-    .contenido-mochila {
-      background: #FFF8E1; border-radius: 16px; padding: 18px;
+    .contenido {
+      background: #FFF8E1; border-radius: 18px; padding: 20px;
       min-height: 200px; border: 3px solid #FFCC80;
     }
-    .vacio { color: #999; font-style: italic; text-align: center; padding: 30px 10px; }
-
-    /* === ELEMENTOS === */
-    .elemento {
-      background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px;
-      border-left: 4px solid; box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-      animation: aparece 0.4s ease-out;
+    .vacio { color: #999; font-style: italic; text-align: center; padding: 40px 15px; }
+    .recuerdo {
+      background: white; border-radius: 14px; padding: 18px; margin-bottom: 15px;
+      border-left: 5px solid #4CAF50; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    @keyframes aparece {
-      from { opacity: 0; transform: scale(0.85); }
-      to { opacity: 1; transform: scale(1); }
+    .recuerdo h4 { color: #2E7D32; margin-bottom: 8px; font-size: 16px; }
+    .recuerdo p { color: #444; margin-bottom: 10px; line-height: 1.6; }
+    .recuerdo small { color: #888; }
+    .foto-recuerdo {
+      width: 100%; height: 180px; background: #E8F5E9; border-radius: 10px;
+      margin: 10px 0; display: flex; align-items: center; justify-content: center;
+      color: #666; font-size: 14px; overflow: hidden;
     }
-    .elemento-flor     { border-color: #FFC107; }
-    .elemento-estrella { border-color: #FF9800; }
-    .elemento-logro    { border-color: #4CAF50; }
-    .elemento-mensaje  { border-color: #2196F3; }
-    .elemento-foto     { border-color: #9C27B0; }
-    .elemento-otro     { border-color: #607D8B; }
-    .icono { font-size: 22px; margin-right: 8px; }
-    .fecha { font-size: 11px; color: #888; margin-top: 4px; }
-    .texto { margin-top: 4px; color: #333; font-size: 15px; line-height: 1.5; }
-    .foto-subida { max-width: 100%; border-radius: 8px; margin-top: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-    .btn-eliminar {
-      margin-top: 8px; background: #FFEBEE; color: #E53935; border: none;
-      padding: 6px 10px; border-radius: 6px; font-size: 12px; cursor: pointer;
-    }
+    .foto-recuerdo img { width: 100%; height: 100%; object-fit: cover; }
 
     /* === AGREGAR RECUERDO === */
-    .agregar-seccion {
-      background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .agregar {
+      background: white; border-radius: 18px; padding: 22px; margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    .agregar-titulo { font-size: 17px; color: #33691E; margin-bottom: 15px; font-weight: bold; }
-    .botones-tipo {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;
+    .agregar-titulo { font-size: 18px; color: #33691E; margin-bottom: 15px; font-weight: bold; }
+    .subir-foto {
+      border: 2px dashed #4CAF50; border-radius: 12px; padding: 20px; text-align: center;
+      margin: 12px 0; cursor: pointer; color: #4CAF50; font-weight: 600; transition: all 0.3s;
     }
-    .btn-tipo {
-      padding: 12px 6px; border: none; border-radius: 10px; font-size: 24px;
-      cursor: pointer; transition: transform 0.2s; background: #F5F5F5;
-    }
-    .btn-tipo:active { transform: scale(0.92); }
-    .btn-tipo.seleccionado { background: #C8E6C9; box-shadow: 0 0 0 3px #4CAF50; }
-    textarea {
-      width: 100%; border: 2px solid #DCEDC8; border-radius: 10px;
-      padding: 12px; font-size: 15px; margin-bottom: 12px; outline: none;
-      background: #FAFFFA;
-    }
-    textarea:focus { border-color: #4CAF50; }
-    .input-archivo {
-      border: 2px dashed #BDBDBD; border-radius: 10px; padding: 15px;
-      text-align: center; margin-bottom: 12px; cursor: pointer;
-      background: #FAFAFA;
-    }
-    .input-archivo:hover { border-color: #9C27B0; background: #F3E5F5; }
-    .vista-previa { max-width: 100px; border-radius: 8px; margin-top: 8px; display: none; }
-    .btn-guardar {
-      width: 100%; padding: 14px;
-      background: linear-gradient(to bottom, #66BB6A, #43A047);
-      color: white; border: none; border-radius: 10px;
-      font-size: 16px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 4px 0 #2E7D32;
-    }
-    .btn-guardar:active { transform: translateY(2px); box-shadow: 0 2px 0 #2E7D32; }
-    .btn-guardar:disabled { background: #BDBDBD; box-shadow: 0 2px 0 #9E9E9E; cursor: not-allowed; }
-
-    /* === TIENDA DE PAQUETES === */
-    .pantalla-tienda {
-      background: white; border-radius: 20px; padding: 25px;
-      max-width: 420px; margin: 20px auto;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    }
-    .paquete {
-      border: 2px solid #E8F5E9; border-radius: 14px; padding: 18px;
-      margin-bottom: 15px; transition: all 0.2s;
-    }
-    .paquete.destacado {
-      border-color: #FFC107; background: #FFF8E1;
-      transform: scale(1.02);
-    }
-    .paquete-nombre { font-weight: bold; font-size: 18px; color: #2E7D32; margin-bottom: 5px; }
-    .paquete-detalle { font-size: 14px; color: #666; margin-bottom: 10px; }
-    .paquete-precio { font-size: 22px; font-weight: bold; color: #E65100; margin-bottom: 12px; }
-    .btn-pagar {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #0070BA; color: white; border: none;
-      padding: 12px 20px; border-radius: 8px; font-weight: bold;
-      cursor: pointer; font-size: 15px; width: 100%; justify-content: center;
-    }
-    .btn-pagar:hover { background: #005EA6; }
-    .btn-volver {
-      background: #E0E0E0; color: #333; border: none;
-      padding: 10px 20px; border-radius: 8px; margin-top: 15px;
-      cursor: pointer; width: 100%; font-size: 15px;
-    }
-    .info-pago { font-size: 12px; color: #888; margin-top: 10px; text-align: center; }
+    .subir-foto:hover { background: #E8F5E9; }
+    .nombre-foto { margin-top: 8px; font-size: 13px; color: #555; }
   </style>
 </head>
 <body>
 
-<!-- PANTALLA DE INICIO DE SESIÓN / REGISTRO -->
+<!-- PANTALLA DE ENTRADA -->
 <div class="pantalla activa" id="pantallaLogin">
-  <div class="caja-cuenta">
+  <div class="caja-login">
     <div class="logo">🎒</div>
     <h1 class="titulo">Mi Mochila de Recuerdos</h1>
-    <p class="subtitulo">Guarda lo bonito que te pasa 💛</p>
+    <p class="subtitulo">Guarda momentos, fotos y logros 💛</p>
 
     <div class="pestañas">
       <div class="pestaña activa" id="pestaIngresar" onclick="cambiarPestana('ingresar')">Ingresar</div>
       <div class="pestaña" id="pestaRegistrar" onclick="cambiarPestana('registrar')">Crear Cuenta</div>
     </div>
 
-    <!-- FORMULARIO INGRESAR -->
     <div id="formIngresar">
       <div class="campo">
         <label>Usuario</label>
@@ -233,263 +261,256 @@
         <label>Contraseña</label>
         <input type="password" id="loginClave" placeholder="Tu contraseña">
       </div>
-      <button class="btn-principal" onclick="iniciarSesion()">🔑 Ingresar</button>
+      <button class="btn" onclick="iniciarSesion()">🔑 Ingresar</button>
       <div class="mensaje" id="msgLogin"></div>
     </div>
 
-    <!-- FORMULARIO REGISTRAR -->
     <div id="formRegistrar" style="display:none;">
       <div class="campo">
         <label>Usuario</label>
         <input type="text" id="regUsuario" placeholder="Elige tu nombre de usuario">
       </div>
       <div class="campo">
-        <label>Correo electrónico</label>
-        <input type="email" id="regCorreo" placeholder="Tu correo">
-      </div>
-      <div class="campo">
         <label>Contraseña</label>
-        <input type="password" id="regClave" placeholder="Crea una contraseña">
+        <input type="password" id="regClave" placeholder="Mínimo 4 caracteres">
       </div>
-      <button class="btn-principal" onclick="registrar()">✨ Crear mi cuenta</button>
+      <button class="btn" onclick="registrar()">✨ Crear mi cuenta</button>
       <div class="mensaje" id="msgRegistro"></div>
     </div>
   </div>
 </div>
 
-<!-- PANTALLA PRINCIPAL - LA MOCHILA -->
+<!-- PANTALLA PRINCIPAL -->
 <div class="pantalla" id="pantallaApp">
+
+  <!-- CABECERA CON AVATAR CLICABLE -->
   <div class="cabecera">
-    <span class="usuario" id="nombreUsuario">👤 Usuario</span>
-    <div style="display:flex; gap:8px;">
-      <button class="btn-tiendita" onclick="abrirTienda()">🛒 Ampliar Espacio</button>
-      <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
+    <div class="avatar-actual" id="avatarMostrar" onclick="alternarAvatares()">
+      <img src="https://images.unsplash.com/photo-1511963509057-7f3a30099242?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Avatar">
     </div>
+    <span class="usuario" id="nombreUsuario">Usuario</span>
+    <button class="btn-salir" onclick="cerrarSesion()">🚪 Salir</button>
   </div>
 
-  <!-- BARRA DE ESPACIO DISPONIBLE -->
+  <!-- SELECCIÓN DE AVATARES -->
+  <div class="seleccion-avatares" id="cajaAvatares">
+    <h3 class="avatares-titulo">🎭 Elige tu Avatar</h3>
+    <div class="cuadricula-avatares" id="listaAvatares">
+      <!-- Se llena con JS -->
+    </div>
+    <button class="cerrar-avatares" onclick="alternarAvatares()">Cerrar</button>
+  </div>
+
+  <!-- BARRA DE ESPACIO -->
   <div class="barra-espacio">
-    <div class="etiqueta-espacio">Espacio utilizado</div>
     <div class="barra-fondo">
       <div class="barra-lleno" id="barraUso" style="width:0%"></div>
     </div>
-    <div class="texto-espacio" id="textoEspacio">0 de 50 recuerdos</div>
+    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos (límite gratis)</div>
+    <div class="aviso-limite" id="avisoLimite">
+      ⚠️ Límite alcanzado — compra espacio para seguir guardando
+    </div>
   </div>
 
-  <!-- AVISO LÍMITE -->
-  <div class="aviso-limite" id="avisoLimite" style="display:none;">
-    ⚠️ Has llegado al límite de recuerdos gratuitos.<br>
-    Ve a la tienda y consigue más espacio para seguir guardando tus momentos 💛
+  <!-- 💳 BOTÓN COMPRAR ESPACIO → PayPal DIRECTO -->
+  <div class="comprar-espacio">
+    <button class="btn-comprar-espacio" onclick="alternarPaquetes()">💳 Comprar Espacio</button>
+    <div class="paquetes-detalle" id="listaPaquetes">
+      <p style="font-weight:bold; margin-bottom:10px;">Elige tu paquete:</p>
+      
+      <div class="paquete-opcion">
+        <div>
+          <strong>Básico</strong><br>
+          +15 recuerdos — $1.00 USD
+        </div>
+        <button class="btn-paquete" onclick="irAPayPal(1)">Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div>
+          <strong>⭐ Recomendado</strong><br>
+          +40 recuerdos — $2.00 USD
+        </div>
+        <button class="btn-paquete" onclick="irAPayPal(2)">Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div>
+          <strong>Premium</strong><br>
+          +100 recuerdos — $3.00 USD
+        </div>
+        <button class="btn-paquete" onclick="irAPayPal(3)">Pagar con PayPal</button>
+      </div>
+      
+      <p style="margin-top:12px; font-size:12px; color:#777;">
+        🔒 Pago seguro por PayPal. Después de pagar avísame para activar tu espacio ✅
+      </p>
+    </div>
   </div>
 
   <!-- ESTADÍSTICAS -->
   <div class="estadisticas">
     <div class="dato">
       <div class="numero" id="totalRecuerdos">0</div>
-      <div class="etiqueta">Guardados</div>
+      <div class="etiqueta">Recuerdos</div>
     </div>
     <div class="dato">
-      <div class="numero" id="diasActivos">0</div>
+      <div class="numero" id="limiteTotal">20</div>
+      <div class="etiqueta">Capacidad</div>
+    </div>
+    <div class="dato">
+      <div class="numero" id="totalFotos">0</div>
+      <div class="etiqueta">Fotos</div>
+    </div>
+    <div class="dato">
+      <div class="numero" id="diasActivos">1</div>
       <div class="etiqueta">Días</div>
     </div>
-    <div class="dato">
-      <div class="numero" id="rachaDias">0</div>
-      <div class="etiqueta">Racha 🔥</div>
+  </div>
+
+  <!-- 🏆 LOGROS -->
+  <div class="logros">
+    <h3 class="logros-titulo">🏆 Mis Logros</h3>
+    <div class="fila-logros">
+      <div class="logro" id="logro1"><div class="logro-icono">🌟</div><div class="logro-nombre">Primer recuerdo</div></div>
+      <div class="logro" id="logro2"><div class="logro-icono">📸</div><div class="logro-nombre">Primera foto</div></div>
+      <div class="logro" id="logro3"><div class="logro-icono">🔥</div><div class="logro-nombre">5 recuerdos</div></div>
+      <div class="logro" id="logro4"><div class="logro-icono">💎</div><div class="logro-nombre">10 recuerdos</div></div>
+      <div class="logro" id="logro5"><div class="logro-icono">👑</div><div class="logro-nombre">20 recuerdos</div></div>
+      <div class="logro" id="logro6"><div class="logro-icono">📅</div><div class="logro-nombre">7 días seguidos</div></div>
     </div>
   </div>
 
   <!-- MOCHILA -->
   <div class="mochila">
     <span class="etiqueta-mochila">Tu Mochila 🎒</span>
-    <div class="contenido-mochila" id="contenidoMochila">
-      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo! ✨</p>
+    <div class="contenido" id="contenidoMochila">
+      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>
     </div>
   </div>
 
   <!-- AGREGAR RECUERDO -->
-  <div class="agregar-seccion">
-    <p class="agregar-titulo">✨ Agregar nuevo recuerdo</p>
-
-    <div class="botones-tipo">
-      <button class="btn-tipo" data-tipo="flor" title="Flor 🌻">🌻</button>
-      <button class="btn-tipo" data-tipo="estrella" title="Estrella ⭐">⭐</button>
-      <button class="btn-tipo" data-tipo="logro" title="Logro 🏆">🏆</button>
-      <button class="btn-tipo" data-tipo="mensaje" title="Mensaje 💌">💌</button>
-      <button class="btn-tipo" data-tipo="foto" title="Foto desde galería 📸">📸</button>
-      <button class="btn-tipo" data-tipo="otro" title="Otro ✨">✨</button>
-    </div>
-
-    <input type="text" id="tituloRecuerdo" placeholder="Título..." autocomplete="off" style="margin-bottom:12px;">
-    <textarea id="detalleRecuerdo" rows="2" placeholder="Describe lo que quieres guardar..."></textarea>
+  <div class="agregar">
+    <p class="agregar-titulo">✏️ Agregar nuevo recuerdo</p>
+    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo...">
+    <textarea id="detalleRecuerdo" rows="4" placeholder="Escribe aquí tu recuerdo..."></textarea>
     
-    <div class="input-archivo" id="cajaArchivo" style="display:none;" onclick="document.getElementById('archivoFoto').click()">
-      📷 Toca para elegir una foto de tu galería
-      <input type="file" id="archivoFoto" accept="image/*" style="display:none;" onchange="previsualizarFoto(event)">
-      <img id="vistaPrevia" class="vista-previa" alt="Vista previa">
-    </div>
-
-    <button class="btn-guardar" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar</button>
-  </div>
-</div>
-
-<!-- PANTALLA TIENDA DE PAQUETES -->
-<div class="pantalla" id="pantallaTienda">
-  <div class="pantalla-tienda">
-    <h2 style="text-align:center; color:#2E7D32; margin-bottom:20px;">🛒 Ampliar mi Espacio</h2>
-    <p style="text-align:center; color:#666; margin-bottom:25px;">Elige el paquete que mejor te quede 💛</p>
-
-    <!-- PAQUETE 1 -->
-    <div class="paquete">
-      <div class="paquete-nombre">🌱 Pequeño</div>
-      <div class="paquete-detalle">+25 recuerdos adicionales</div>
-      <div class="paquete-precio">$2.50 USD</div>
-      <button class="btn-pagar" onclick="pagarPaquete(1)">
-        💳 Pagar con PayPal
-      </button>
-    </div>
-
-    <!-- PAQUETE 2 - DESTACADO -->
-    <div class="paquete destacado">
-      <div class="paquete-nombre">⭐ Recomendado</div>
-      <div class="paquete-detalle">+60 recuerdos adicionales</div>
-      <div class="paquete-precio">$5.00 USD</div>
-      <button class="btn-pagar" onclick="pagarPaquete(2)">
-        💳 Pagar con PayPal
-      </button>
-    </div>
-
-    <!-- PAQUETE 3 -->
-    <div class="paquete">
-      <div class="paquete-nombre">🏆 Ilimitado</div>
-      <div class="paquete-detalle">Sin límite de recuerdos</div>
-      <div class="paquete-precio">$12.00 USD</div>
-      <button class="btn-pagar" onclick="pagarPaquete(3)">
-        💳 Pagar con PayPal
-      </button>
-    </div>
-
-    <p class="info-pago">✅ Al pagar, tu espacio se amplía automáticamente.<br>
-    🔒 Pago seguro con PayPal.</p>
-
-    <button class="btn-volver" onclick="cerrarTienda()">← Volver a mi mochila</button>
+    <label class="subir-foto" for="fotoInput">
+      📷 Haz clic para subir una foto
+      <input type="file" id="fotoInput" accept="image/*" style="display:none;" onchange="cargarFoto(event)">
+      <div class="nombre-foto" id="nombreFoto">Ninguna foto seleccionada</div>
+    </label>
+    
+    <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
   </div>
 </div>
 
 <script>
-  // === CONFIGURACIÓN ===
-  const LIMITE_BASE = 50;
-  const PAQUETES = {
-    1: { extra: 25, precio: 2.50, enlace: 'https://paypal.me/TU_USUARIO/2.50' },
-    2: { extra: 60, precio: 5.00, enlace: 'https://paypal.me/TU_USUARIO/5.00' },
-    3: { extra: 9999, precio: 12.00, enlace: 'https://paypal.me/TU_USUARIO/12.00' }
-  };
-
-  // === TIPOS DE RECUERDOS ===
-  const tipos = {
-    flor:     { icono: '🌻', clase: 'elemento-flor' },
-    estrella: { icono: '⭐', clase: 'elemento-estrella' },
-    logro:    { icono: '🏆', clase: 'elemento-logro' },
-    mensaje:  { icono: '💌', clase: 'elemento-mensaje' },
-    foto:     { icono: '📸', clase: 'elemento-foto' },
-    otro:     { icono: '✨', clase: 'elemento-otro' }
-  };
-
-  // === ESTADO GLOBAL ===
   let usuarioActivo = null;
-  let tipoSeleccionado = 'flor';
   let fotoBase64 = null;
 
-  // === CAMBIAR PESTAÑA LOGIN/REGISTRO ===
-  function cambiarPestana(pestana) {
-    document.getElementById('pestaIngresar').classList.toggle('activa', pestana === 'ingresar');
-    document.getElementById('pestaRegistrar').classList.toggle('activa', pestana === 'registrar');
-    document.getElementById('formIngresar').style.display = pestana === 'ingresar' ? 'block' : 'none';
-    document.getElementById('formRegistrar').style.display = pestana === 'registrar' ? 'block' : 'none';
-    document.getElementById('msgLogin').textContent = '';
-    document.getElementById('msgRegistro').textContent = '';
-  }
+  // === CONFIGURA TU USUARIO DE PAYPAL AQUÍ ===
+  const USUARIO_PAYPAL = 'TU_USUARIO_AQUI'; // ← Cambia esto por tu usuario de PayPal
 
-  // === REGISTRAR CUENTA ===
-  function registrar() {
-    const usuario = document.getElementById('regUsuario').value.trim();
-    const correo = document.getElementById('regCorreo').value.trim();
-    const clave = document.getElementById('regClave').value;
-    const msg = document.getElementById('msgRegistro');
+  // === AVATARES CON FOTOS DE PERSONAJES ===
+  const avatares = [
+    {
+      id: 'avatar0',
+      nombre: 'Inicial',
+      condicion: null,
+      requiere: null,
+      foto: 'https://images.unsplash.com/photo-1511963509057-7f3a30099242?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar1',
+      nombre: 'Minecraft',
+      condicion: 'logro1',
+      requiere: 1,
+      foto: 'https://images.unsplash.com/photo-1587573089734-09cb69c01e36?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar2',
+      nombre: 'Mario',
+      condicion: 'logro2',
+      requiere: 2,
+      foto: 'https://images.unsplash.com/photo-1612036741808-90d45c4a4b50?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar3',
+      nombre: 'Spider-Man',
+      condicion: 'logro3',
+      requiere: 3,
+      foto: 'https://images.unsplash.com/photo-1635805737707-3e68f66d1d5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar4',
+      nombre: 'Batman',
+      condicion: 'logro4',
+      requiere: 4,
+      foto: 'https://images.unsplash.com/photo-1617305550520-4542c5e8b2a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar5',
+      nombre: 'Superman',
+      condicion: 'logro5',
+      requiere: 5,
+      foto: 'https://images.unsplash.com/photo-1618336758459-806608a1a46c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar6',
+      nombre: 'Constante',
+      condicion: 'logro6',
+      requiere: 6,
+      foto: 'https://images.unsplash.com/photo-1542909168-85c870f8f028?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    },
+    {
+      id: 'avatar7',
+      nombre: 'Campeón',
+      condicion: 'todos',
+      requiere: 'todos',
+      foto: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    }
+  ];
 
-    if (!usuario || !correo || !clave) {
-      msg.className = 'mensaje error';
-      msg.textContent = 'Completa todos los campos ✏️';
+  // === IR A PAYPAL ===
+  function irAPayPal(opcion) {
+    if (!usuarioActivo) {
+      alert('🔑 Inicia sesión primero para comprar');
       return;
     }
-    if (clave.length < 4) {
-      msg.className = 'mensaje error';
-      msg.textContent = 'La contraseña debe tener al menos 4 caracteres 🔒';
-      return;
-    }
-
-    const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas') || '{}');
-    if (cuentas[usuario]) {
-      msg.className = 'mensaje error';
-      msg.textContent = 'Este usuario ya existe, elige otro 👀';
-      return;
-    }
-
-    cuentas[usuario] = {
-      correo,
-      clave,
-      recuerdos: [],
-      espacioExtra: 0,
-      creado: new Date().toISOString().slice(0,10),
-      ultimoAcceso: new Date().toISOString().slice(0,10)
-    };
-    localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
-
-    msg.className = 'mensaje exito';
-    msg.textContent = '¡Cuenta creada con éxito! 🎉 Inicia sesión ahora';
-    setTimeout(() => cambiarPestana('ingresar'), 1500);
+    const precios = { 1: 1, 2: 2, 3: 3 };
+    const monto = precios[opcion];
+    
+    // Abre directamente PayPal en pestaña nueva
+    window.open(https://paypal.me/${USUARIO_PAYPAL}/${monto}, '_blank');
+    
+    // Mensaje de confirmación
+    alert(✅ Abriendo PayPal...\n\nMonto: $${monto}.00 USD\n\nDespués de pagar, avísame para activar tu espacio 💳);
   }
 
-  // === INICIAR SESIÓN ===
-  function iniciarSesion() {
-    const usuario = document.getElementById('loginUsuario').value.trim();
-    const clave = document.getElementById('loginClave').value;
-    const msg = document.getElementById('msgLogin');
-
-    const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas') || '{}');
-    if (!cuentas[usuario] || cuentas[usuario].clave !== clave) {
-      msg.className = 'mensaje error';
-      msg.textContent = 'Usuario o contraseña incorrectos ❌';
-      return;
-    }
-
-    usuarioActivo = usuario;
-    cuentas[usuario].ultimoAcceso = new Date().toISOString().slice(0,10);
-    localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
-
-    document.getElementById('nombreUsuario').textContent = '👤 ' + usuario;
-    document.getElementById('pantallaLogin').classList.remove('activa');
-    document.getElementById('pantallaApp').classList.add('activa');
-    cargarDatosUsuario();
+  // === Mostrar/ocultar avatares ===
+  function alternarAvatares() {
+    const caja = document.getElementById('cajaAvatares');
+    caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
+    if (caja.style.display === 'block') renderizarAvatares();
   }
 
-  // === CERRAR SESIÓN ===
-  function cerrarSesion() {
-    usuarioActivo = null;
-    fotoBase64 = null;
-    document.getElementById('pantallaApp').classList.remove('activa');
-    document.getElementById('pantallaTienda').classList.remove('activa');
-    document.getElementById('pantallaLogin').classList.add('activa');
-    document.getElementById('loginUsuario').value = '';
-    document.getElementById('loginClave').value = '';
+  // === Mostrar/ocultar paquetes ===
+  function alternarPaquetes() {
+    const lista = document.getElementById('listaPaquetes');
+    lista.style.display = lista.style.display === 'block' ? 'none' : 'block';
   }
 
-  // === CARGAR DATOS DEL USUARIO ACTIVO ===
-  function cargarDatosUsuario() {
+  // === Dibujar avatares con fotos ===
+  function renderizarAvatares() {
     const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas') || '{}');
     const datos = cuentas[usuarioActivo];
-    const recuerdos = datos.recuerdos || [];
-    const espacioTotal = LIMITE_BASE + (datos.espacioExtra || 0);
+    const logros = datos.logros || [];
+    const avatarSeleccionado = datos.avatar || 'avatar0';
+    const contenedor = document.getElementById('listaAvatares');
+    contenedor.innerHTML = '';
 
-    // Actualizar barra de espacio
-    const porcentaje = Math.min(100, (recuerdos.length / espacioTotal) * 100);
-    document.getElementById('barraUso')
+    avatares.forEach(av => {
+      let desbloqueado = false;
+      if (av.requiere === null) desbloqueado = true;
+      else if (av.requiere === 'todos') desbl
