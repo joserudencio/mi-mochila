@@ -3,277 +3,381 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎒 Mi Mochila de Recuerdos</title>
+  <title>🎒 Mi Mochila de Recuerdos Diarios</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-    body{background:#E8F5E9;padding:20px}
-    .caja{max-width:400px;margin:50px auto;background:#fff;padding:30px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,0.1)}
-    h1{text-align:center;color:#2E7D32;margin-bottom:30px}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+    body{background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);min-height:100vh;padding:15px}
+    .pantalla{display:none}
+    .activa{display:block}
+
+    .caja-login{background:#fff;border-radius:20px;padding:30px 25px;max-width:420px;margin:40px auto;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+    .logo{text-align:center;font-size:50px;margin-bottom:5px}
+    .titulo{text-align:center;font-size:24px;color:#2E7D32;margin-bottom:5px}
+    .subtitulo{text-align:center;color:#666;margin-bottom:25px;font-size:14px}
     .pestañas{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
-    .pestaña{flex:1;padding:12px;text-align:center;cursor:pointer;color:#888;font-weight:bold}
-    .pestaña.activa{color:#2E7D32;border-bottom:3px solid #4CAF50}
+    .pestaña{flex:1;padding:12px;text-align:center;color:#888;cursor:pointer;border-bottom:3px solid transparent;font-weight:600}
+    .pestaña.activa{color:#2E7D32;border-bottom-color:#4CAF50}
     .campo{margin-bottom:15px}
-    label{display:block;margin-bottom:5px;font-weight:bold;color:#444}
-    input{width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;font-size:16px}
-    input:focus{border-color:#4CAF50;outline:none}
-    button{width:100%;padding:14px;background:#4CAF50;color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:5px}
-    button:hover{background:#45A049}
-    button:disabled{background:#ccc;cursor:not-allowed}
-    .mensaje{margin-top:15px;padding:10px;border-radius:8px;text-align:center;min-height:40px}
-    .error{background:#FFEBEE;color:#C62828}
-    .exito{background:#E8F5E9;color:#2E7D32}
-    .oculto{display:none !important}
-    .app{max-width:600px;margin:0 auto}
-    .salir{background:#EF5350;margin-bottom:20px}
-    .fila{background:#fff;padding:15px;border-radius:12px;margin-bottom:10px;border-left:4px solid #4CAF50}
-    .foto{max-width:100%;border-radius:8px;margin:10px 0}
+    label{display:block;margin-bottom:5px;font-weight:600;color:#444;font-size:14px}
+    input,textarea{width:100%;padding:14px 12px;border:2px solid #ddd;border-radius:10px;font-size:16px;outline:none}
+    input:focus,textarea:focus{border-color:#4CAF50}
+    .btn{width:100%;padding:14px;background:linear-gradient(to bottom,#66BB6A,#43A047);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #2E7D32;margin-top:5px;transition:all .2s}
+    .btn:hover{transform:translateY(-2px)}
+    .mensaje{margin-top:15px;text-align:center;font-size:14px;min-height:22px}
+    .error{color:#E53935}
+    .exito{color:#2E7D32}
+
+    .cabecera{display:flex;align-items:center;gap:12px;background:#fff;padding:12px 18px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.1)}
+    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer}
+    .avatar-actual img{width:100%;height:100%;object-fit:cover}
+    .usuario{flex:1;font-weight:700;color:#2E7D32;font-size:15px}
+    .btn-salir{background:#EF5350;color:#fff;border:none;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer}
+
+    .titulo-principal{text-align:center;background:#fff;border-radius:16px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+    .titulo-principal h2{font-size:22px;color:#2E7D32;margin-bottom:5px}
+    .titulo-principal p{color:#666}
+
+    .barra-espacio{background:#fff;border-radius:14px;padding:15px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+    .barra-fondo{height:12px;background:#E0E0E0;border-radius:6px;overflow:hidden}
+    .barra-lleno{height:100%;background:linear-gradient(to right,#4CAF50,#FFC107,#E53935);border-radius:6px;transition:width .4s}
+    .texto-barra{font-size:14px;margin-top:8px;color:#333;font-weight:600}
+    .aviso-limite{color:#E53935;font-weight:700;margin-top:10px;font-size:14px;padding:8px;background:#FFEBEE;border-radius:8px;display:none}
+
+    .comprar-espacio{background:#fff;border-radius:18px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center}
+    .btn-comprar-espacio{background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-weight:700;cursor:pointer;font-size:18px;width:100%;max-width:340px;box-shadow:0 4px 0 #005EA6;transition:all .2s}
+    .btn-comprar-espacio:hover{transform:translateY(-2px)}
+    .paquetes-detalle{margin-top:20px;display:none;text-align:left}
+    .paquete-opcion{background:linear-gradient(135deg,#F5F5F5,#FAFAFA);border-radius:12px;padding:16px 18px;margin:12px 0;border-left:4px solid #009cde;transition:transform .2s}
+    .paquete-opcion:hover{transform:scale(1.01);box-shadow:0 3px 10px rgba(0,156,222,.15)}
+    .paquete-nombre{font-weight:700;font-size:17px;color:#0070BA;margin-bottom:4px}
+    .paquete-info{font-size:14px;color:#555;margin-bottom:10px;line-height:1.5}
+    .paquete-precio{font-size:22px;font-weight:700;color:#2E7D32;margin-bottom:10px}
+    .btn-paquete{padding:11px 20px;background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;width:100%;max-width:260px;box-shadow:0 3px 0 #005EA6;transition:all .2s}
+    .btn-paquete:hover{transform:translateY(-2px)}
+    .cerrar-paquetes{margin-top:15px;background:#E0E0E0;color:#444;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;width:100%}
+
+    .estadisticas{display:flex;justify-content:space-around;background:#fff;border-radius:16px;padding:20px 10px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+    .dato{text-align:center;min-width:80px}
+    .numero{font-size:26px;font-weight:700;color:#2E7D32}
+    .etiqueta{font-size:13px;color:#777;margin-top:4px}
+
+    .mochila{background:linear-gradient(145deg,#8D6E63,#6D4C41);border-radius:24px;padding:25px 20px;margin-bottom:25px;border:4px solid #5D4037}
+    .etiqueta-mochila{background:#FFD54F;color:#5D4037;font-weight:700;padding:10px 20px;border-radius:10px;display:inline-block;margin-bottom:18px;font-size:18px}
+    .contenido{background:#FFF8E1;border-radius:18px;padding:20px;min-height:200px;border:3px solid #FFCC80}
+    .vacio{color:#999;font-style:italic;text-align:center;padding:40px 15px}
+    .recuerdo{background:#fff;border-radius:14px;padding:18px;margin-bottom:15px;border-left:5px solid #4CAF50}
+    .recuerdo h4{color:#2E7D32;margin-bottom:8px}
+    .recuerdo small{color:#888}
+
+    .agregar{background:#fff;border-radius:18px;padding:22px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+    .agregar-titulo{font-size:18px;color:#33691E;margin-bottom:15px;font-weight:700}
+    .btn:disabled{background:#ccc;cursor:not-allowed;box-shadow:none;transform:none}
   </style>
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
-<div id="pantallaLogin" class="caja">
-  <h1>🎒 Mi Mochila</h1>
-  
-  <div class="pestañas">
-    <div id="tabIngresar" class="pestaña activa" onclick="cambiarTab('ingresar')">Ingresar</div>
-    <div id="tabRegistrar" class="pestaña" onclick="cambiarTab('registrar')">Crear Cuenta</div>
-  </div>
+<div class="pantalla activa" id="pantallaLogin">
+  <div class="caja-login">
+    <div class="logo">🎒</div>
+    <h1 class="titulo">Mi Mochila de Recuerdos Diarios</h1>
+    <p class="subtitulo">Guarda cada momento especial, día a día 💛</p>
 
-  <!-- FORMULARIO INGRESAR -->
-  <div id="formIngresar">
-    <div class="campo">
-      <label>Usuario</label>
-      <input type="text" id="usuLogin" placeholder="Tu usuario">
+    <div class="pestañas">
+      <div class="pestaña" id="pestaIngresar" onclick="cambiarPestana('ingresar')">Ingresar</div>
+      <div class="pestaña activa" id="pestaRegistrar" onclick="cambiarPestana('registrar')">Crear Cuenta</div>
     </div>
-    <div class="campo">
-      <label>Contraseña</label>
-      <input type="password" id="passLogin" placeholder="Tu contraseña">
-    </div>
-    <button onclick="entrar()">Ingresar</button>
-    <div id="msgLogin" class="mensaje"></div>
-  </div>
 
-  <!-- FORMULARIO REGISTRAR -->
-  <div id="formRegistrar" class="oculto">
-    <div class="campo">
-      <label>Elige tu usuario</label>
-      <input type="text" id="usuReg" placeholder="Ej: jose123">
+    <div id="formIngresar" style="display:none;">
+      <div class="campo">
+        <label>Usuario o Correo</label>
+        <input type="text" id="loginUsuario" placeholder="Tu usuario o correo">
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="loginClave" placeholder="Escribe tu contraseña">
+      </div>
+      <button class="btn" onclick="iniciarSesion()">🔑 Ingresar</button>
+      <div class="mensaje" id="msgLogin"></div>
     </div>
-    <div class="campo">
-      <label>Correo</label>
-      <input type="email" id="correoReg" placeholder="tu@correo.com">
+
+    <div id="formRegistrar">
+      <div class="campo">
+        <label>Correo Electrónico</label>
+        <input type="email" id="regCorreo" placeholder="tu@correo.com">
+      </div>
+      <div class="campo">
+        <label>Usuario</label>
+        <input type="text" id="regUsuario" placeholder="Elige tu nombre de usuario">
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="regClave" placeholder="Mínimo 4 caracteres">
+      </div>
+      <button class="btn" onclick="registrar()">✨ Crear mi cuenta</button>
+      <div class="mensaje" id="msgRegistro"></div>
     </div>
-    <div class="campo">
-      <label>Contraseña</label>
-      <input type="password" id="passReg" placeholder="Mínimo 4 caracteres">
-    </div>
-    <button onclick="crearCuenta()">Crear Cuenta</button>
-    <div id="msgReg" class="mensaje"></div>
   </div>
 </div>
 
-<!-- PANTALLA PRINCIPAL -->
-<div id="pantallaApp" class="app oculto">
-  <button class="salir" onclick="salir()">🚪 Cerrar Sesión</button>
-  <h2>Bienvenido, <span id="miNombre"></span> 👋</h2>
-  <hr style="margin:15px 0;border:1px solid #eee">
-
-  <h3>✏️ Nuevo Recuerdo</h3>
-  <div class="caja" style="margin-top:15px">
-    <div class="campo">
-      <label>Título</label>
-      <input type="text" id="titulo" placeholder="Título...">
+<div class="pantalla" id="pantallaApp">
+  <div class="cabecera">
+    <div class="avatar-actual">
+      <img src="https://images.unsplash.com/photo-1511963509057-7f3a30099242?w=150&q=80" alt="Avatar">
     </div>
-    <div class="campo">
-      <label>Descripción</label>
-      <input type="text" id="detalle" placeholder="Qué pasó hoy...">
-    </div>
-    <div class="campo">
-      <label>Foto</label>
-      <input type="file" id="fotoArchivo" accept="image/*" onchange="cargarFoto(event)">
-      <img id="fotoVista" class="foto oculto">
-    </div>
-    <button onclick="guardarRecuerdo()">💾 Guardar</button>
+    <span class="usuario" id="nombreUsuario">Usuario</span>
+    <button class="btn-salir" onclick="cerrarSesion()">🚪 Salir</button>
   </div>
 
-  <h3 style="margin-top:30px">📖 Mis Recuerdos</h3>
-  <div id="listaRecuerdos" style="margin-top:15px">
-    <p style="color:#888;text-align:center;padding:20px">Aún no tienes recuerdos</p>
+  <div class="titulo-principal">
+    <h2>🎒 Mi Mochila de Recuerdos Diarios</h2>
+    <p>Guarda, recuerda y valora cada día ✨</p>
+  </div>
+
+  <div class="barra-espacio">
+    <div class="barra-fondo"><div class="barra-lleno" id="barraUso" style="width:0%"></div></div>
+    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos (límite gratis)</div>
+    <div class="aviso-limite" id="avisoLimite">⚠️ Límite alcanzado — compra más espacio abajo</div>
+  </div>
+
+  <div class="comprar-espacio">
+    <button class="btn-comprar-espacio" onclick="alternarPaquetes()">💳 Comprar Más Recuerdos</button>
+    
+    <div class="paquetes-detalle" id="listaPaquetes">
+      <p style="text-align:center;font-weight:bold;margin-bottom:15px;font-size:16px;">📦 Elige tu paquete:</p>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥉 Básico</div>
+        <div class="paquete-info">+20 recuerdos adicionales</div>
+        <div class="paquete-precio">$1.00 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(1)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥈 Estándar</div>
+        <div class="paquete-info">+40 recuerdos adicionales</div>
+        <div class="paquete-precio">$1.50 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(2)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <div class="paquete-opcion">
+        <div class="paquete-nombre">🥇 Premium ⭐ Recomendado</div>
+        <div class="paquete-info">+80 recuerdos adicionales</div>
+        <div class="paquete-precio">$3.00 USD</div>
+        <button class="btn-paquete" onclick="irAPayPal(3)">💳 Pagar con PayPal</button>
+      </div>
+      
+      <p style="text-align:center;margin-top:15px;font-size:12px;color:#777;">🔒 Pago seguro. Después de pagar avísame para activar ✅</p>
+      <button class="cerrar-paquetes" onclick="alternarPaquetes()">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="estadisticas">
+    <div class="dato"><div class="numero" id="totalRecuerdos">0</div><div class="etiqueta">Recuerdos</div></div>
+    <div class="dato"><div class="numero" id="limiteTotal">20</div><div class="etiqueta">Capacidad</div></div>
+  </div>
+
+  <div class="mochila">
+    <span class="etiqueta-mochila">🎒 Mis Recuerdos Diarios</span>
+    <div class="contenido" id="contenidoMochila">
+      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>
+    </div>
+  </div>
+
+  <div class="agregar">
+    <p class="agregar-titulo">✏️ Agregar recuerdo de hoy</p>
+    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo...">
+    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy? Escribe tu recuerdo aquí..."></textarea>
+    <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
   </div>
 </div>
 
 <script>
 let usuarioActivo = null;
-let fotoDatos = null;
+const USUARIO_PAYPAL = 'TU_USUARIO_AQUI'; // ← Pon tu usuario de PayPal aquí
 
-// CAMBIAR PESTAÑA
-function cambiarTab(nombre){
-  document.getElementById('tabIngresar').classList.toggle('activa', nombre==='ingresar');
-  document.getElementById('tabRegistrar').classList.toggle('activa', nombre==='registrar');
-  document.getElementById('formIngresar').classList.toggle('oculto', nombre!=='ingresar');
-  document.getElementById('formRegistrar').classList.toggle('oculto', nombre!=='registrar');
-  limpiarMensajes();
+function irAPayPal(opcion){
+  if(!usuarioActivo){alert('🔑 Inicia sesión primero');return;}
+  
+  const paquetes = {
+    1: {monto: 1, cantidad: 20},
+    2: {monto: 1.50, cantidad: 40},
+    3: {monto: 3, cantidad: 80}
+  };
+  
+  const p = paquetes[opcion];
+  window.open(https://paypal.me/${USUARIO_PAYPAL}/${p.monto}, '_blank');
+  
+  alert(✅ Abriendo PayPal...\n\nPaquete: +${p.cantidad} recuerdos\nMonto: $${p.monto} USD\n\n👉 Después de pagar, avísame ✅);
 }
 
-function limpiarMensajes(){
+function alternarPaquetes(){
+  const caja = document.getElementById('listaPaquetes');
+  caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
+}
+
+function cambiarPestana(p){
+  document.getElementById('pestaIngresar').classList.toggle('activa', p==='ingresar');
+  document.getElementById('pestaRegistrar').classList.toggle('activa', p==='registrar');
+  document.getElementById('formIngresar').style.display = p==='ingresar' ? 'block' : 'none';
+  document.getElementById('formRegistrar').style.display = p==='registrar' ? 'block' : 'none';
   document.getElementById('msgLogin').textContent = '';
-  document.getElementById('msgReg').textContent = '';
+  document.getElementById('msgRegistro').textContent = '';
 }
 
-// OBTENER TODAS LAS CUENTAS
-function obtenerCuentas(){
-  const datos = localStorage.getItem('cuentas');
-  return datos ? JSON.parse(datos) : {};
+function validarCorreo(correo){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 }
 
-function guardarCuentas(cuentas){
-  localStorage.setItem('cuentas', JSON.stringify(cuentas));
-}
-
-// CREAR CUENTA
-function crearCuenta(){
-  const usu = document.getElementById('usuReg').value.trim();
-  const correo = document.getElementById('correoReg').value.trim();
-  const pass = document.getElementById('passReg').value;
-  const msg = document.getElementById('msgReg');
-
-  if(!usu || !correo || !pass){
-    msg.className = 'mensaje error';
-    msg.textContent = '⚠️ Completa todos los campos';
+function registrar(){
+  const correo = document.getElementById('regCorreo').value.trim();
+  const u = document.getElementById('regUsuario').value.trim();
+  const c = document.getElementById('regClave').value;
+  const m = document.getElementById('msgRegistro');
+  
+  if(!correo || !u || !c){
+    m.className='mensaje error';
+    m.textContent='⚠️ Completa todos los campos';
     return;
   }
-  if(pass.length < 4){
-    msg.className = 'mensaje error';
-    msg.textContent = '⚠️ Contraseña muy corta (4 mínimo)';
+  if(!validarCorreo(correo)){
+    m.className='mensaje error';
+    m.textContent='⚠️ Escribe un correo válido (ej: nombre@gmail.com)';
     return;
   }
-
-  const cuentas = obtenerCuentas();
-  if(cuentas[usu]){
-    msg.className = 'mensaje error';
-    msg.textContent = '⚠️ Usuario ya existe, elige otro';
+  if(c.length < 4){
+    m.className='mensaje error';
+    m.textContent='⚠️ Contraseña muy corta (mínimo 4 caracteres)';
     return;
   }
 
-  cuentas[usu] = {
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  
+  // Verificar si correo o usuario ya existen
+  for(let nom in cuentas){
+    if(cuentas[nom].correo === correo){
+      m.className='mensaje error';
+      m.textContent='⚠️ Este correo ya está registrado';
+      return;
+    }
+  }
+  if(cuentas[u]){
+    m.className='mensaje error';
+    m.textContent='⚠️ Este nombre de usuario ya existe';
+    return;
+  }
+
+  cuentas[u] = {
     correo: correo,
-    pass: pass,
-    recuerdos: []
+    clave: c,
+    recuerdos: [],
+    limite: 20,
+    creado: new Date().toISOString().slice(0,10)
   };
-  guardarCuentas(cuentas);
-
-  msg.className = 'mensaje exito';
-  msg.textContent = '✅ Cuenta creada! Ve a Ingresar';
   
-  // Limpiar
-  document.getElementById('usuReg').value = '';
-  document.getElementById('correoReg').value = '';
-  document.getElementById('passReg').value = '';
+  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
+  m.className='mensaje exito';
+  m.textContent='✅ ¡Cuenta creada con éxito! Ve a Ingresar';
+  
+  setTimeout(()=>cambiarPestana('ingresar'), 2000);
 }
 
-// INICIAR SESIÓN
-function entrar(){
-  const usu = document.getElementById('usuLogin').value.trim();
-  const pass = document.getElementById('passLogin').value;
-  const msg = document.getElementById('msgLogin');
-
-  if(!usu || !pass){
-    msg.className = 'mensaje error';
-    msg.textContent = '⚠️ Escribe usuario y contraseña';
+function iniciarSesion(){
+  const entrada = document.getElementById('loginUsuario').value.trim();
+  const c = document.getElementById('loginClave').value;
+  const m = document.getElementById('msgLogin');
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  
+  // Buscar por usuario o por correo
+  let encontrado = null;
+  for(let nom in cuentas){
+    if(nom === entrada || cuentas[nom].correo === entrada){
+      encontrado = nom;
+      break;
+    }
+  }
+  
+  if(!encontrado){
+    m.className='mensaje error';
+    m.textContent='❌ No encontrado → Crea cuenta primero';
+    return;
+  }
+  if(cuentas[encontrado].clave !== c){
+    m.className='mensaje error';
+    m.textContent='❌ Contraseña incorrecta';
     return;
   }
 
-  const cuentas = obtenerCuentas();
-  if(!cuentas[usu]){
-    msg.className = 'mensaje error';
-    msg.textContent = '❌ Usuario NO encontrado. Crea cuenta primero';
-    return;
-  }
-  if(cuentas[usu].pass !== pass){
-    msg.className = 'mensaje error';
-    msg.textContent = '❌ Contraseña INCORRECTA';
-    return;
-  }
-
-  // ✅ ENTRAR
-  usuarioActivo = usu;
-  document.getElementById('miNombre').textContent = usu;
-  document.getElementById('pantallaLogin').classList.add('oculto');
-  document.getElementById('pantallaApp').classList.remove('oculto');
-  cargarLista();
+  usuarioActivo = encontrado;
+  document.getElementById('nombreUsuario').textContent = '👤 ' + encontrado;
+  document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
+  document.getElementById('pantallaApp').classList.add('activa');
+  cargarDatos();
 }
 
-// CERRAR SESIÓN
-function salir(){
+function cerrarSesion(){
   usuarioActivo = null;
-  fotoDatos = null;
-  document.getElementById('pantallaApp').classList.add('oculto');
-  document.getElementById('pantallaLogin').classList.remove('oculto');
-  document.getElementById('usuLogin').value = '';
-  document.getElementById('passLogin').value = '';
-  cambiarTab('ingresar');
+  document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
+  document.getElementById('pantallaLogin').classList.add('activa');
 }
 
-// CARGAR FOTO
-function cargarFoto(e){
-  const archivo = e.target.files[0];
-  if(!archivo) return;
-  const lector = new FileReader();
-  lector.onload = function(evento){
-    fotoDatos = evento.target.result;
-    const vista = document.getElementById('fotoVista');
-    vista.src = fotoDatos;
-    vista.classList.remove('oculto');
-  };
-  lector.readAsDataURL(archivo);
+function cargarDatos(){
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  const datos = cuentas[usuarioActivo];
+  const recuerdos = datos.recuerdos || [];
+  const limite = datos.limite || 20;
+  
+  const porcentaje = Math.min(100, (recuerdos.length / limite) * 100);
+  document.getElementById('barraUso').style.width = porcentaje + '%';
+  document.getElementById('textoEspacio').textContent = recuerdos.length + ' de ' + limite + ' recuerdos';
+  
+  const llegoLimite = recuerdos.length >= limite;
+  document.getElementById('avisoLimite').style.display = llegoLimite ? 'block' : 'none';
+  
+  const btnGuardar = document.getElementById('btnGuardar');
+  btnGuardar.disabled = llegoLimite;
+  btnGuardar.textContent = llegoLimite ? '⚠️ Límite alcanzado — Compra espacio' : '💾 Guardar Recuerdo';
+
+  document.getElementById('totalRecuerdos').textContent = recuerdos.length;
+  document.getElementById('limiteTotal').textContent = limite;
+
+  const caja = document.getElementById('contenidoMochila');
+  if(recuerdos.length === 0){
+    caja.innerHTML = '<p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>';
+    return;
+  }
+  caja.innerHTML = recuerdos.map(r=>
+    '<div class="recuerdo"><h4>📌 '+r.titulo+'</h4><p>'+r.detalle+'</p><small>📅 '+r.fecha+'</small></div>'
+  ).join('');
 }
 
-// GUARDAR RECUERDO
 function guardarRecuerdo(){
-  if(!usuarioActivo) return alert('Error de sesión');
+  if(!usuarioActivo) return alert('🔑 Inicia sesión primero');
   
-  const tit = document.getElementById('titulo').value.trim() || 'Sin título';
-  const det = document.getElementById('detalle').value.trim();
+  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
+  if(!cuentas[usuarioActivo].recuerdos) cuentas[usuarioActivo].recuerdos = [];
   
-  const cuentas = obtenerCuentas();
+  const limite = cuentas[usuarioActivo].limite || 20;
+  if(cuentas[usuarioActivo].recuerdos.length >= limite){
+    alert('⚠️ Límite de ' + limite + ' recuerdos alcanzado\nCompra más espacio abajo 💳');
+    return;
+  }
+
+  const tit = document.getElementById('tituloRecuerdo').value.trim() || 'Sin título';
+  const det = document.getElementById('detalleRecuerdo').value.trim();
+
   cuentas[usuarioActivo].recuerdos.unshift({
     titulo: tit,
     detalle: det,
-    foto: fotoDatos,
     fecha: new Date().toLocaleString('es-EC')
   });
-  guardarCuentas(cuentas);
 
-  // Limpiar
-  document.getElementById('titulo').value = '';
-  document.getElementById('detalle').value = '';
-  document.getElementById('fotoArchivo').value = '';
-  document.getElementById('fotoVista').classList.add('oculto');
-  fotoDatos = null;
-
-  cargarLista();
-  alert('✅ Guardado!');
-}
-
-// CARGAR LISTA
-function cargarLista(){
-  const cuentas = obtenerCuentas();
-  const lista = cuentas[usuarioActivo].recuerdos;
-  const caja = document.getElementById('listaRecuerdos');
+  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
   
-  if(lista.length === 0){
-    caja.innerHTML = '<p style="color:#888;text-align:center;padding:20px">Aún no tienes recuerdos</p>';
-    return;
-  }
-
-  caja.innerHTML = lista.map(r => {
-    let html = <div class="fila"><strong>${r.titulo}</strong><br>;
-    if(r.detalle) html += r.detalle + '<br>';
-    if(r.foto) html += <img src="${r.foto}" class="foto">;
-    html += <small style="color:#888">${r.fecha}</small></div>;
-    return html;
-  }).join('');
+  document.getElementById('tituloRecuerdo').value = '';
+  document.getElementById('detalleRecuerdo').value = '';
+  
+  cargarDatos();
+  alert('✅ Recuerdo guardado con éxito');
 }
 </script>
 </body>
