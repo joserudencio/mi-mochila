@@ -28,8 +28,7 @@
     .exito{color:#2E7D32}
 
     .cabecera{display:flex;align-items:center;gap:12px;background:#fff;padding:12px 18px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.1)}
-    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer}
-    .avatar-actual img{width:100%;height:100%;object-fit:cover}
+    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-size:22px}
     .usuario{flex:1;font-weight:700;color:#2E7D32;font-size:15px}
     .btn-salir{background:#EF5350;color:#fff;border:none;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer}
 
@@ -89,8 +88,8 @@
 
     <div id="formIngresar" style="display:none;">
       <div class="campo">
-        <label>Usuario o Correo</label>
-        <input type="text" id="loginUsuario" placeholder="Tu usuario o correo">
+        <label>Usuario</label>
+        <input type="text" id="loginUsuario" placeholder="Escribe tu usuario">
       </div>
       <div class="campo">
         <label>Contraseña</label>
@@ -102,12 +101,8 @@
 
     <div id="formRegistrar">
       <div class="campo">
-        <label>Correo Electrónico</label>
-        <input type="email" id="regCorreo" placeholder="tu@correo.com">
-      </div>
-      <div class="campo">
         <label>Usuario</label>
-        <input type="text" id="regUsuario" placeholder="Elige tu nombre de usuario">
+        <input type="text" id="regUsuario" placeholder="Ej: Jose">
       </div>
       <div class="campo">
         <label>Contraseña</label>
@@ -121,9 +116,7 @@
 
 <div class="pantalla" id="pantallaApp">
   <div class="cabecera">
-    <div class="avatar-actual">
-      <img src="https://images.unsplash.com/photo-1511963509057-7f3a30099242?w=150&q=80" alt="Avatar">
-    </div>
+    <div class="avatar-actual">👤</div>
     <span class="usuario" id="nombreUsuario">Usuario</span>
     <button class="btn-salir" onclick="cerrarSesion()">🚪 Salir</button>
   </div>
@@ -166,7 +159,7 @@
         <button class="btn-paquete" onclick="irAPayPal(3)">💳 Pagar con PayPal</button>
       </div>
       
-      <p style="text-align:center;margin-top:15px;font-size:12px;color:#777;">🔒 Pago seguro. Después de pagar avísame para activar ✅</p>
+      <p style="text-align:center;margin-top:15px;font-size:12px;color:#777;">🔒 Pago seguro → paypal.me/arestapias<br>Después de pagar avísame para activar ✅</p>
       <button class="cerrar-paquetes" onclick="alternarPaquetes()">Cerrar</button>
     </div>
   </div>
@@ -185,35 +178,15 @@
 
   <div class="agregar">
     <p class="agregar-titulo">✏️ Agregar recuerdo de hoy</p>
-    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo...">
-    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy? Escribe tu recuerdo aquí..."></textarea>
+    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo..." style="width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;margin-bottom:12px;font-size:16px">
+    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy? Escribe tu recuerdo aquí..." style="width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;margin-bottom:15px;font-size:16px"></textarea>
     <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
   </div>
 </div>
 
 <script>
 let usuarioActivo = null;
-const USUARIO_PAYPAL = 'TU_USUARIO_AQUI'; // ← Pon tu usuario de PayPal aquí
-
-function irAPayPal(opcion){
-  if(!usuarioActivo){alert('🔑 Inicia sesión primero');return;}
-  
-  const paquetes = {
-    1: {monto: 1, cantidad: 20},
-    2: {monto: 1.50, cantidad: 40},
-    3: {monto: 3, cantidad: 80}
-  };
-  
-  const p = paquetes[opcion];
-  window.open(https://paypal.me/${USUARIO_PAYPAL}/${p.monto}, '_blank');
-  
-  alert(✅ Abriendo PayPal...\n\nPaquete: +${p.cantidad} recuerdos\nMonto: $${p.monto} USD\n\n👉 Después de pagar, avísame ✅);
-}
-
-function alternarPaquetes(){
-  const caja = document.getElementById('listaPaquetes');
-  caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
-}
+const ENLACE_PAYPAL = 'https://paypal.me/arestapias';
 
 function cambiarPestana(p){
   document.getElementById('pestaIngresar').classList.toggle('activa', p==='ingresar');
@@ -224,50 +197,30 @@ function cambiarPestana(p){
   document.getElementById('msgRegistro').textContent = '';
 }
 
-function validarCorreo(correo){
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
-}
-
 function registrar(){
-  const correo = document.getElementById('regCorreo').value.trim();
   const u = document.getElementById('regUsuario').value.trim();
   const c = document.getElementById('regClave').value;
   const m = document.getElementById('msgRegistro');
   
-  if(!correo || !u || !c){
+  if(!u || !c){
     m.className='mensaje error';
-    m.textContent='⚠️ Completa todos los campos';
-    return;
-  }
-  if(!validarCorreo(correo)){
-    m.className='mensaje error';
-    m.textContent='⚠️ Escribe un correo válido (ej: nombre@gmail.com)';
+    m.textContent='⚠️ Escribe usuario y contraseña';
     return;
   }
   if(c.length < 4){
     m.className='mensaje error';
-    m.textContent='⚠️ Contraseña muy corta (mínimo 4 caracteres)';
+    m.textContent='⚠️ Contraseña muy corta (mínimo 4)';
     return;
   }
 
   const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  
-  // Verificar si correo o usuario ya existen
-  for(let nom in cuentas){
-    if(cuentas[nom].correo === correo){
-      m.className='mensaje error';
-      m.textContent='⚠️ Este correo ya está registrado';
-      return;
-    }
-  }
   if(cuentas[u]){
     m.className='mensaje error';
-    m.textContent='⚠️ Este nombre de usuario ya existe';
+    m.textContent='⚠️ Ese usuario ya existe → ve a Ingresar';
     return;
   }
 
   cuentas[u] = {
-    correo: correo,
     clave: c,
     recuerdos: [],
     limite: 20,
@@ -276,39 +229,33 @@ function registrar(){
   
   localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
   m.className='mensaje exito';
-  m.textContent='✅ ¡Cuenta creada con éxito! Ve a Ingresar';
+  m.textContent='✅ ¡Cuenta creada! Ve a Ingresar';
+  
+  document.getElementById('regUsuario').value = '';
+  document.getElementById('regClave').value = '';
   
   setTimeout(()=>cambiarPestana('ingresar'), 2000);
 }
 
 function iniciarSesion(){
-  const entrada = document.getElementById('loginUsuario').value.trim();
+  const u = document.getElementById('loginUsuario').value.trim();
   const c = document.getElementById('loginClave').value;
   const m = document.getElementById('msgLogin');
   const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
   
-  // Buscar por usuario o por correo
-  let encontrado = null;
-  for(let nom in cuentas){
-    if(nom === entrada || cuentas[nom].correo === entrada){
-      encontrado = nom;
-      break;
-    }
-  }
-  
-  if(!encontrado){
+  if(!cuentas[u]){
     m.className='mensaje error';
-    m.textContent='❌ No encontrado → Crea cuenta primero';
+    m.textContent='❌ No existe → Crea cuenta primero';
     return;
   }
-  if(cuentas[encontrado].clave !== c){
+  if(cuentas[u].clave !== c){
     m.className='mensaje error';
     m.textContent='❌ Contraseña incorrecta';
     return;
   }
 
-  usuarioActivo = encontrado;
-  document.getElementById('nombreUsuario').textContent = '👤 ' + encontrado;
+  usuarioActivo = u;
+  document.getElementById('nombreUsuario').textContent = '👤 ' + u;
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaApp').classList.add('activa');
   cargarDatos();
@@ -318,6 +265,31 @@ function cerrarSesion(){
   usuarioActivo = null;
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
   document.getElementById('pantallaLogin').classList.add('activa');
+  document.getElementById('loginUsuario').value = '';
+  document.getElementById('loginClave').value = '';
+}
+
+function alternarPaquetes(){
+  const caja = document.getElementById('listaPaquetes');
+  caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
+}
+
+function irAPayPal(opcion){
+  if(!usuarioActivo){
+    alert('🔑 Inicia sesión primero');
+    return;
+  }
+  
+  const paquetes = {
+    1: {monto: '1.00', cantidad: 20},
+    2: {monto: '1.50', cantidad: 40},
+    3: {monto: '3.00', cantidad: 80}
+  };
+  
+  const p = paquetes[opcion];
+  window.open(${ENLACE_PAYPAL}/${p.monto}, '_blank');
+  
+  alert(✅ Abriendo PayPal...\n\nPaquete: +${p.cantidad} recuerdos\nMonto: $${p.monto} USD\n\n👉 Después de pagar, avísame para activar ✅);
 }
 
 function cargarDatos(){
@@ -351,10 +323,15 @@ function cargarDatos(){
 }
 
 function guardarRecuerdo(){
-  if(!usuarioActivo) return alert('🔑 Inicia sesión primero');
+  if(!usuarioActivo){
+    alert('🔑 Inicia sesión primero');
+    return;
+  }
   
   const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(!cuentas[usuarioActivo].recuerdos) cuentas[usuarioActivo].recuerdos = [];
+  if(!cuentas[usuarioActivo].recuerdos){
+    cuentas[usuarioActivo].recuerdos = [];
+  }
   
   const limite = cuentas[usuarioActivo].limite || 20;
   if(cuentas[usuarioActivo].recuerdos.length >= limite){
