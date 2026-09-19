@@ -3,358 +3,478 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎒 Mi Mochila de Recuerdos Diarios</title>
+  <title>🧠 Desafío de Memoria — Paga y Juega</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-    body{background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);min-height:100vh;padding:15px}
-    .pantalla{display:none}
-    .activa{display:block}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Arial',sans-serif}
+    body{
+      background:linear-gradient(135deg,#1a2a6c 0%,#b21f1f 50%,#fdcb6e 100%);
+      min-height:100vh;
+      padding:20px 15px;
+    }
+    .contenedor{max-width:600px;margin:0 auto}
 
-    .caja-login{background:#fff;border-radius:20px;padding:30px 25px;max-width:420px;margin:40px auto;box-shadow:0 8px 24px rgba(0,0,0,.15)}
-    .logo{text-align:center;font-size:50px;margin-bottom:5px}
-    .titulo{text-align:center;font-size:24px;color:#2E7D32;margin-bottom:5px}
-    .subtitulo{text-align:center;color:#666;margin-bottom:25px;font-size:14px}
-    .pestañas{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
-    .pestaña{flex:1;padding:12px;text-align:center;color:#888;cursor:pointer;border-bottom:3px solid transparent;font-weight:600}
-    .pestaña.activa{color:#2E7D32;border-bottom-color:#4CAF50}
-    .campo{margin-bottom:15px}
-    label{display:block;margin-bottom:5px;font-weight:600;color:#444;font-size:14px}
-    input,textarea{width:100%;padding:14px 12px;border:2px solid #ddd;border-radius:10px;font-size:16px;outline:none}
-    input:focus,textarea:focus{border-color:#4CAF50}
-    .btn{width:100%;padding:14px;background:linear-gradient(to bottom,#66BB6A,#43A047);color:#fff;border:none;border-radius:10px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #2E7D32;margin-top:5px;transition:all .2s}
-    .btn:hover{transform:translateY(-2px)}
-    .mensaje{margin-top:15px;text-align:center;font-size:14px;min-height:22px}
-    .error{color:#E53935}
-    .exito{color:#2E7D32}
+    h1{
+      text-align:center;
+      color:#fff;
+      font-size:26px;
+      margin-bottom:5px;
+      text-shadow:0 3px 10px rgba(0,0,0,.3);
+    }
+    .subtitulo{
+      text-align:center;
+      color:#fff9c4;
+      margin-bottom:20px;
+      font-size:14px;
+    }
 
-    .cabecera{display:flex;align-items:center;gap:12px;background:#fff;padding:12px 18px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.1)}
-    .avatar-actual{width:45px;height:45px;border-radius:50%;overflow:hidden;border:3px solid #2E7D32;cursor:pointer;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-size:22px}
-    .usuario{flex:1;font-weight:700;color:#2E7D32;font-size:15px}
-    .btn-salir{background:#EF5350;color:#fff;border:none;padding:9px 15px;border-radius:10px;font-weight:700;cursor:pointer}
+    /* === PANTALLA DE PAGO INICIAL === */
+    .caja-pago{
+      background:#fff;
+      border-radius:20px;
+      padding:35px 25px;
+      margin:40px auto;
+      box-shadow:0 10px 40px rgba(0,0,0,.25);
+      text-align:center;
+      max-width:420px;
+    }
+    .caja-pago h2{font-size:22px;color:#1a2a6c;margin-bottom:15px}
+    .caja-pago .emoji{font-size:50px;margin-bottom:10px}
+    .precio-etiqueta{font-size:16px;color:#666;margin-bottom:5px}
+    .precio-valor{font-size:42px;font-weight:bold;color:#b21f1f;margin-bottom:20px}
+    .reglas{
+      background:#f9f9f9;
+      border-radius:12px;
+      padding:15px;
+      margin-bottom:25px;
+      text-align:left;
+      font-size:14px;
+      line-height:1.8;
+    }
+    .reglas p{margin-bottom:8px}
+    .gana{color:#2E7D32;font-weight:bold}
+    .pierde{color:#c62828;font-weight:bold}
+    .btn-pagar{
+      width:100%;
+      padding:16px;
+      background:linear-gradient(to bottom,#009cde,#0070BA);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-size:18px;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow:0 4px 0 #005EA6;
+      transition:all .2s;
+    }
+    .btn-pagar:hover{transform:translateY(-2px)}
+    .confirmacion{
+      margin-top:15px;
+      padding:12px;
+      background:#E3F2FD;
+      border-radius:8px;
+      font-size:13px;
+      color:#0066cc;
+      display:none;
+    }
+    .codigo-verificacion{
+      margin-top:15px;
+      display:none;
+    }
+    .codigo-verificacion input{
+      width:100%;
+      padding:12px;
+      border:2px solid #ddd;
+      border-radius:8px;
+      font-size:16px;
+      text-align:center;
+      margin-bottom:10px;
+    }
+    .btn-verificar{
+      width:100%;
+      padding:12px;
+      background:linear-gradient(to bottom,#4CAF50,#388E3C);
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+    }
 
-    .titulo-principal{text-align:center;background:#fff;border-radius:16px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
-    .titulo-principal h2{font-size:22px;color:#2E7D32;margin-bottom:5px}
-    .titulo-principal p{color:#666}
+    /* === JUEGO === */
+    .oculto{display:none !important}
+    .barra-tiempo{
+      background:#eee;
+      border-radius:10px;
+      height:24px;
+      margin-bottom:15px;
+      overflow:hidden;
+      box-shadow:inset 0 2px 5px rgba(0,0,0,.1);
+    }
+    .barra-lleno{
+      height:100%;
+      width:100%;
+      background:linear-gradient(to right,#4CAF50,#FFC107,#E53935);
+      border-radius:10px;
+      transition:width 1s linear;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-weight:bold;
+      font-size:13px;
+      text-shadow:0 1px 2px rgba(0,0,0,.3);
+    }
+    .barra-lleno.urgente{background:linear-gradient(to right,#E53935,#b71c1c)}
 
-    .barra-espacio{background:#fff;border-radius:14px;padding:15px;margin-bottom:20px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
-    .barra-fondo{height:12px;background:#E0E0E0;border-radius:6px;overflow:hidden}
-    .barra-lleno{height:100%;background:linear-gradient(to right,#4CAF50,#FFC107,#E53935);border-radius:6px;transition:width .4s}
-    .texto-barra{font-size:14px;margin-top:8px;color:#333;font-weight:600}
-    .aviso-limite{color:#E53935;font-weight:700;margin-top:10px;font-size:14px;padding:8px;background:#FFEBEE;border-radius:8px;display:none}
+    .estadisticas{
+      background:#fff;
+      border-radius:16px;
+      padding:15px 10px;
+      margin-bottom:20px;
+      display:flex;
+      justify-content:space-around;
+      box-shadow:0 8px 20px rgba(0,0,0,.15);
+    }
+    .dato{text-align:center}
+    .numero{font-size:24px;font-weight:bold}
+    .etiqueta{font-size:12px;color:#888;margin-top:3px}
+    .tiempo-num{color:#d32f2f}
+    .intentos-num{color:#f57c00}
+    .parejas-num{color:#388e3c}
 
-    .comprar-espacio{background:#fff;border-radius:18px;padding:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1);text-align:center}
-    .btn-comprar-espacio{background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-weight:700;cursor:pointer;font-size:18px;width:100%;max-width:340px;box-shadow:0 4px 0 #005EA6;transition:all .2s}
-    .btn-comprar-espacio:hover{transform:translateY(-2px)}
-    .paquetes-detalle{margin-top:20px;display:none;text-align:left}
-    .paquete-opcion{background:linear-gradient(135deg,#F5F5F5,#FAFAFA);border-radius:12px;padding:16px 18px;margin:12px 0;border-left:4px solid #009cde;transition:transform .2s}
-    .paquete-opcion:hover{transform:scale(1.01);box-shadow:0 3px 10px rgba(0,156,222,.15)}
-    .paquete-nombre{font-weight:700;font-size:17px;color:#0070BA;margin-bottom:4px}
-    .paquete-info{font-size:14px;color:#555;margin-bottom:10px;line-height:1.5}
-    .paquete-precio{font-size:22px;font-weight:700;color:#2E7D32;margin-bottom:10px}
-    .btn-paquete{padding:11px 20px;background:linear-gradient(to bottom,#009cde,#0070BA);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;width:100%;max-width:260px;box-shadow:0 3px 0 #005EA6;transition:all .2s}
-    .btn-paquete:hover{transform:translateY(-2px)}
-    .cerrar-paquetes{margin-top:15px;background:#E0E0E0;color:#444;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;width:100%}
+    .tablero{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-bottom:20px;
+    }
+    @media (max-width:400px){.tablero{gap:8px}}
 
-    .estadisticas{display:flex;justify-content:space-around;background:#fff;border-radius:16px;padding:20px 10px;margin-bottom:20px;flex-wrap:wrap;gap:10px}
-    .dato{text-align:center;min-width:80px}
-    .numero{font-size:26px;font-weight:700;color:#2E7D32}
-    .etiqueta{font-size:13px;color:#777;margin-top:4px}
+    .carta{
+      aspect-ratio:1;
+      cursor:pointer;
+      perspective:600px;
+    }
+    .carta-interior{
+      position:relative;
+      width:100%;height:100%;
+      transition:transform .5s;
+      transform-style:preserve-3d;
+    }
+    .carta.volteada .carta-interior{transform:rotateY(180deg)}
 
-    .mochila{background:linear-gradient(145deg,#8D6E63,#6D4C41);border-radius:24px;padding:25px 20px;margin-bottom:25px;border:4px solid #5D4037}
-    .etiqueta-mochila{background:#FFD54F;color:#5D4037;font-weight:700;padding:10px 20px;border-radius:10px;display:inline-block;margin-bottom:18px;font-size:18px}
-    .contenido{background:#FFF8E1;border-radius:18px;padding:20px;min-height:200px;border:3px solid #FFCC80}
-    .vacio{color:#999;font-style:italic;text-align:center;padding:40px 15px}
-    .recuerdo{background:#fff;border-radius:14px;padding:18px;margin-bottom:15px;border-left:5px solid #4CAF50}
-    .recuerdo h4{color:#2E7D32;margin-bottom:8px}
-    .recuerdo small{color:#888}
+    .cara{
+      position:absolute;
+      width:100%;height:100%;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      backface-visibility:hidden;
+      box-shadow:0 4px 10px rgba(0,0,0,.15);
+    }
+    .cara-atras{
+      background:linear-gradient(135deg,#1a2a6c,#283593);
+      color:#fff;
+      font-weight:bold;
+      font-size:24px;
+    }
+    .cara-frente{
+      background:#fff;
+      transform:rotateY(180deg);
+      border:3px solid #4CAF50;
+    }
+    .carta.acertada .cara-frente{
+      background:#E8F5E9;
+      animation:feliz .6s ease-in-out;
+    }
+    @keyframes feliz{
+      0%{transform:rotateY(180deg) scale(1)}
+      50%{transform:rotateY(180deg) scale(1.15)}
+      100%{transform:rotateY(180deg) scale(1)}
+    }
 
-    .agregar{background:#fff;border-radius:18px;padding:22px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
-    .agregar-titulo{font-size:18px;color:#33691E;margin-bottom:15px;font-weight:700}
-    .btn:disabled{background:#ccc;cursor:not-allowed;box-shadow:none;transform:none}
+    .botones{display:flex;gap:12px;margin-bottom:20px}
+    .btn-nuevo{
+      flex:1;
+      padding:14px;
+      background:linear-gradient(to bottom,#4CAF50,#388E3C);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow:0 4px 0 rgba(0,0,0,.2);
+      transition:all .2s;
+    }
+    .btn-nuevo:hover{transform:translateY(-2px)}
+
+    .mensaje-final{
+      position:fixed;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      background:#fff;
+      padding:30px 25px;
+      border-radius:20px;
+      text-align:center;
+      box-shadow:0 10px 40px rgba(0,0,0,.3);
+      z-index:100;
+      display:none;
+      max-width:92%;
+      width:360px;
+    }
+    .mensaje-final h2{font-size:24px;margin-bottom:10px}
+    .mensaje-final p{color:#555;margin-bottom:15px;font-size:15px;line-height:1.6}
+    .gana{color:#2E7D32}
+    .pierde{color:#c62828}
+    .fondo-opaco{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.7);
+      display:none;
+      z-index:99;
+    }
   </style>
 </head>
 <body>
 
-<div class="pantalla activa" id="pantallaLogin">
-  <div class="caja-login">
-    <div class="logo">🎒</div>
-    <h1 class="titulo">Mi Mochila de Recuerdos Diarios</h1>
-    <p class="subtitulo">Guarda cada momento especial, día a día 💛</p>
+<div class="contenedor">
+  <h1>🧠 DESAFÍO DE MEMORIA</h1>
+  <p class="subtitulo">Paga → Juega → ¡Gana!</p>
 
-    <div class="pestañas">
-      <div class="pestaña" id="pestaIngresar" onclick="cambiarPestana('ingresar')">Ingresar</div>
-      <div class="pestaña activa" id="pestaRegistrar" onclick="cambiarPestana('registrar')">Crear Cuenta</div>
+  <!-- PANTALLA 1: PAGO PARA JUGAR -->
+  <div id="pantallaPago">
+    <div class="caja-pago">
+      <div class="emoji">🎮</div>
+      <h2>¡Juega y Gana!</h2>
+      <p class="precio-etiqueta">Costo de entrada:</p>
+      <div class="precio-valor">$1.00 USD</div>
+      
+      <div class="reglas">
+        <p>✅ <span class="gana">Completa en menos de 60s → GANAS $10 USD</span></p>
+        <p>⏱️ Tienes <strong>1 minuto</strong> y <strong>20 intentos</strong></p>
+        <p>❌ Si pierdes, no pagas nada más</p>
+        <p style="margin-top:10px;font-size:12px;color:#888">PayPal: paypal.me/arestapias</p>
+      </div>
+
+      <button class="btn-pagar" onclick="pagarParaJugar()">💳 Pagar $1 y Comenzar</button>
+      
+      <div class="confirmacion" id="confirmacionPago">
+        ✅ Abierto PayPal...<br>
+        Después de pagar, escribe "JUGAR" abajo:
+      </div>
+      
+      <div class="codigo-verificacion" id="codigoArea">
+        <input type="text" id="codigoIngresado" placeholder="Escribe: JUGAR">
+        <button class="btn-verificar" onclick="verificarAcceso()">✅ Comenzar Juego</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: EL JUEGO -->
+  <div id="pantallaJuego" class="oculto">
+    <div class="barra-tiempo">
+      <div class="barra-lleno" id="barraTiempo">60s</div>
     </div>
 
-    <div id="formIngresar" style="display:none;">
-      <div class="campo">
-        <label>Usuario</label>
-        <input type="text" id="loginUsuario" placeholder="Escribe tu usuario">
+    <div class="estadisticas">
+      <div class="dato">
+        <div class="numero tiempo-num" id="tiempoRestante">60</div>
+        <div class="etiqueta">Segundos</div>
       </div>
-      <div class="campo">
-        <label>Contraseña</label>
-        <input type="password" id="loginClave" placeholder="Escribe tu contraseña">
+      <div class="dato">
+        <div class="numero intentos-num" id="intentos">0/20</div>
+        <div class="etiqueta">Intentos</div>
       </div>
-      <button class="btn" onclick="iniciarSesion()">🔑 Ingresar</button>
-      <div class="mensaje" id="msgLogin"></div>
+      <div class="dato">
+        <div class="numero parejas-num" id="encontradas">0/8</div>
+        <div class="etiqueta">Parejas</div>
+      </div>
     </div>
 
-    <div id="formRegistrar">
-      <div class="campo">
-        <label>Usuario</label>
-        <input type="text" id="regUsuario" placeholder="Ej: Jose">
-      </div>
-      <div class="campo">
-        <label>Contraseña</label>
-        <input type="password" id="regClave" placeholder="Mínimo 4 caracteres">
-      </div>
-      <button class="btn" onclick="registrar()">✨ Crear mi cuenta</button>
-      <div class="mensaje" id="msgRegistro"></div>
+    <div class="botones">
+      <button class="btn-nuevo" onclick="reiniciarJuego()">🔄 Reiniciar</button>
     </div>
+
+    <div class="tablero" id="tablero"></div>
   </div>
 </div>
 
-<div class="pantalla" id="pantallaApp">
-  <div class="cabecera">
-    <div class="avatar-actual">👤</div>
-    <span class="usuario" id="nombreUsuario">Usuario</span>
-    <button class="btn-salir" onclick="cerrarSesion()">🚪 Salir</button>
-  </div>
-
-  <div class="titulo-principal">
-    <h2>🎒 Mi Mochila de Recuerdos Diarios</h2>
-    <p>Guarda, recuerda y valora cada día ✨</p>
-  </div>
-
-  <div class="barra-espacio">
-    <div class="barra-fondo"><div class="barra-lleno" id="barraUso" style="width:0%"></div></div>
-    <div class="texto-barra" id="textoEspacio">0 de 20 recuerdos (límite gratis)</div>
-    <div class="aviso-limite" id="avisoLimite">⚠️ Límite alcanzado — compra más espacio abajo</div>
-  </div>
-
-  <div class="comprar-espacio">
-    <button class="btn-comprar-espacio" onclick="alternarPaquetes()">💳 Comprar Más Recuerdos</button>
-    
-    <div class="paquetes-detalle" id="listaPaquetes">
-      <p style="text-align:center;font-weight:bold;margin-bottom:15px;font-size:16px;">📦 Elige tu paquete:</p>
-      
-      <div class="paquete-opcion">
-        <div class="paquete-nombre">🥉 Básico</div>
-        <div class="paquete-info">+20 recuerdos adicionales</div>
-        <div class="paquete-precio">$1.00 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(1)">💳 Pagar con PayPal</button>
-      </div>
-      
-      <div class="paquete-opcion">
-        <div class="paquete-nombre">🥈 Estándar</div>
-        <div class="paquete-info">+40 recuerdos adicionales</div>
-        <div class="paquete-precio">$1.50 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(2)">💳 Pagar con PayPal</button>
-      </div>
-      
-      <div class="paquete-opcion">
-        <div class="paquete-nombre">🥇 Premium ⭐ Recomendado</div>
-        <div class="paquete-info">+80 recuerdos adicionales</div>
-        <div class="paquete-precio">$3.00 USD</div>
-        <button class="btn-paquete" onclick="irAPayPal(3)">💳 Pagar con PayPal</button>
-      </div>
-      
-      <p style="text-align:center;margin-top:15px;font-size:12px;color:#777;">🔒 Pago seguro → paypal.me/arestapias<br>Después de pagar avísame para activar ✅</p>
-      <button class="cerrar-paquetes" onclick="alternarPaquetes()">Cerrar</button>
-    </div>
-  </div>
-
-  <div class="estadisticas">
-    <div class="dato"><div class="numero" id="totalRecuerdos">0</div><div class="etiqueta">Recuerdos</div></div>
-    <div class="dato"><div class="numero" id="limiteTotal">20</div><div class="etiqueta">Capacidad</div></div>
-  </div>
-
-  <div class="mochila">
-    <span class="etiqueta-mochila">🎒 Mis Recuerdos Diarios</span>
-    <div class="contenido" id="contenidoMochila">
-      <p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>
-    </div>
-  </div>
-
-  <div class="agregar">
-    <p class="agregar-titulo">✏️ Agregar recuerdo de hoy</p>
-    <input type="text" id="tituloRecuerdo" placeholder="Título del recuerdo..." style="width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;margin-bottom:12px;font-size:16px">
-    <textarea id="detalleRecuerdo" rows="4" placeholder="¿Qué pasó hoy? Escribe tu recuerdo aquí..." style="width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;margin-bottom:15px;font-size:16px"></textarea>
-    <button class="btn" id="btnGuardar" onclick="guardarRecuerdo()">💾 Guardar Recuerdo</button>
-  </div>
+<!-- MENSAJE DE RESULTADO -->
+<div class="fondo-opaco" id="fondoFinal"></div>
+<div class="mensaje-final" id="mensajeFinal">
+  <h2 id="tituloFinal"></h2>
+  <p id="textoFinal"></p>
+  <button class="btn-nuevo" style="margin-top:12px" onclick="cerrarMensaje();reiniciarJuego();">🎮 Jugar de Nuevo</button>
 </div>
 
 <script>
-let usuarioActivo = null;
-const ENLACE_PAYPAL = 'https://paypal.me/arestapias';
+const emojis = ['🍎','🍌','🍇','🍓','🌻','🌴','🐱','🐶','🦋','⭐','🎈','🎁','🏆','💎','🚀','🎵'];
+const TIEMPO_LIMITE = 60;
+const MAX_INTENTOS = 20;
+const ENLACE_PAYPAL = 'https://paypal.me/arestapias/1.00';
 
-function cambiarPestana(p){
-  document.getElementById('pestaIngresar').classList.toggle('activa', p==='ingresar');
-  document.getElementById('pestaRegistrar').classList.toggle('activa', p==='registrar');
-  document.getElementById('formIngresar').style.display = p==='ingresar' ? 'block' : 'none';
-  document.getElementById('formRegistrar').style.display = p==='registrar' ? 'block' : 'none';
-  document.getElementById('msgLogin').textContent = '';
-  document.getElementById('msgRegistro').textContent = '';
+let cartas = [];
+let volteadas = [];
+let bloqueado = false;
+let juegoActivo = false;
+let intentos = 0;
+let parejasEncontradas = 0;
+let segundosRestantes = TIEMPO_LIMITE;
+let cronometro = null;
+
+// === PASO 1: PAGAR PARA JUGAR ===
+function pagarParaJugar(){
+  window.open(ENLACE_PAYPAL, '_blank');
+  document.getElementById('confirmacionPago').style.display = 'block';
+  document.getElementById('codigoArea').style.display = 'block';
 }
 
-function registrar(){
-  const u = document.getElementById('regUsuario').value.trim();
-  const c = document.getElementById('regClave').value;
-  const m = document.getElementById('msgRegistro');
-  
-  if(!u || !c){
-    m.className='mensaje error';
-    m.textContent='⚠️ Escribe usuario y contraseña';
-    return;
+// === PASO 2: VERIFICAR Y ENTRAR ===
+function verificarAcceso(){
+  const codigo = document.getElementById('codigoIngresado').value.trim().toUpperCase();
+  if(codigo === 'JUGAR'){
+    document.getElementById('pantallaPago').classList.add('oculto');
+    document.getElementById('pantallaJuego').classList.remove('oculto');
+    iniciarJuego();
+  } else {
+    alert('❌ Escribe exactamente: JUGAR');
   }
-  if(c.length < 4){
-    m.className='mensaje error';
-    m.textContent='⚠️ Contraseña muy corta (mínimo 4)';
-    return;
-  }
-
-  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(cuentas[u]){
-    m.className='mensaje error';
-    m.textContent='⚠️ Ese usuario ya existe → ve a Ingresar';
-    return;
-  }
-
-  cuentas[u] = {
-    clave: c,
-    recuerdos: [],
-    limite: 20,
-    creado: new Date().toISOString().slice(0,10)
-  };
-  
-  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
-  m.className='mensaje exito';
-  m.textContent='✅ ¡Cuenta creada! Ve a Ingresar';
-  
-  document.getElementById('regUsuario').value = '';
-  document.getElementById('regClave').value = '';
-  
-  setTimeout(()=>cambiarPestana('ingresar'), 2000);
 }
 
-function iniciarSesion(){
-  const u = document.getElementById('loginUsuario').value.trim();
-  const c = document.getElementById('loginClave').value;
-  const m = document.getElementById('msgLogin');
-  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  
-  if(!cuentas[u]){
-    m.className='mensaje error';
-    m.textContent='❌ No existe → Crea cuenta primero';
-    return;
-  }
-  if(cuentas[u].clave !== c){
-    m.className='mensaje error';
-    m.textContent='❌ Contraseña incorrecta';
-    return;
-  }
+// === LÓGICA DEL JUEGO ===
+function mezclar(arr){return [...arr].sort(()=>Math.random()-.5)}
 
-  usuarioActivo = u;
-  document.getElementById('nombreUsuario').textContent = '👤 ' + u;
-  document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
-  document.getElementById('pantallaApp').classList.add('activa');
-  cargarDatos();
-}
-
-function cerrarSesion(){
-  usuarioActivo = null;
-  document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
-  document.getElementById('pantallaLogin').classList.add('activa');
-  document.getElementById('loginUsuario').value = '';
-  document.getElementById('loginClave').value = '';
-}
-
-function alternarPaquetes(){
-  const caja = document.getElementById('listaPaquetes');
-  caja.style.display = caja.style.display === 'block' ? 'none' : 'block';
-}
-
-function irAPayPal(opcion){
-  if(!usuarioActivo){
-    alert('🔑 Inicia sesión primero');
-    return;
-  }
-  
-  const paquetes = {
-    1: {monto: '1.00', cantidad: 20},
-    2: {monto: '1.50', cantidad: 40},
-    3: {monto: '3.00', cantidad: 80}
-  };
-  
-  const p = paquetes[opcion];
-  window.open(${ENLACE_PAYPAL}/${p.monto}, '_blank');
-  
-  alert(✅ Abriendo PayPal...\n\nPaquete: +${p.cantidad} recuerdos\nMonto: $${p.monto} USD\n\n👉 Después de pagar, avísame para activar ✅);
-}
-
-function cargarDatos(){
-  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  const datos = cuentas[usuarioActivo];
-  const recuerdos = datos.recuerdos || [];
-  const limite = datos.limite || 20;
-  
-  const porcentaje = Math.min(100, (recuerdos.length / limite) * 100);
-  document.getElementById('barraUso').style.width = porcentaje + '%';
-  document.getElementById('textoEspacio').textContent = recuerdos.length + ' de ' + limite + ' recuerdos';
-  
-  const llegoLimite = recuerdos.length >= limite;
-  document.getElementById('avisoLimite').style.display = llegoLimite ? 'block' : 'none';
-  
-  const btnGuardar = document.getElementById('btnGuardar');
-  btnGuardar.disabled = llegoLimite;
-  btnGuardar.textContent = llegoLimite ? '⚠️ Límite alcanzado — Compra espacio' : '💾 Guardar Recuerdo';
-
-  document.getElementById('totalRecuerdos').textContent = recuerdos.length;
-  document.getElementById('limiteTotal').textContent = limite;
-
-  const caja = document.getElementById('contenidoMochila');
-  if(recuerdos.length === 0){
-    caja.innerHTML = '<p class="vacio">Aún no has guardado nada...<br>¡Agrega tu primer recuerdo abajo! ✨</p>';
-    return;
-  }
-  caja.innerHTML = recuerdos.map(r=>
-    '<div class="recuerdo"><h4>📌 '+r.titulo+'</h4><p>'+r.detalle+'</p><small>📅 '+r.fecha+'</small></div>'
-  ).join('');
-}
-
-function guardarRecuerdo(){
-  if(!usuarioActivo){
-    alert('🔑 Inicia sesión primero');
-    return;
-  }
-  
-  const cuentas = JSON.parse(localStorage.getItem('mochilaCuentas')||'{}');
-  if(!cuentas[usuarioActivo].recuerdos){
-    cuentas[usuarioActivo].recuerdos = [];
-  }
-  
-  const limite = cuentas[usuarioActivo].limite || 20;
-  if(cuentas[usuarioActivo].recuerdos.length >= limite){
-    alert('⚠️ Límite de ' + limite + ' recuerdos alcanzado\nCompra más espacio abajo 💳');
-    return;
-  }
-
-  const tit = document.getElementById('tituloRecuerdo').value.trim() || 'Sin título';
-  const det = document.getElementById('detalleRecuerdo').value.trim();
-
-  cuentas[usuarioActivo].recuerdos.unshift({
-    titulo: tit,
-    detalle: det,
-    fecha: new Date().toLocaleString('es-EC')
+function crearTablero(){
+  const seleccion = mezclar(emojis).slice(0, 8);
+  cartas = mezclar([...seleccion, ...seleccion]);
+  const tablero = document.getElementById('tablero');
+  tablero.innerHTML = '';
+  cartas.forEach((emoji, i)=>{
+    const carta = document.createElement('div');
+    carta.className = 'carta';
+    carta.dataset.emoji = emoji;
+    carta.innerHTML = `<div class="carta-interior">
+      <div class="cara cara-atras">?</div>
+      <div class="cara cara-frente">${emoji}</div>
+    </div>`;
+    carta.onclick = ()=>voltearCarta(i);
+    tablero.appendChild(carta);
   });
+}
 
-  localStorage.setItem('mochilaCuentas', JSON.stringify(cuentas));
+function voltearCarta(indice){
+  if(!juegoActivo || bloqueado) return;
+  if(volteadas.includes(indice)) return;
+  if(volteadas.length >= 2) return;
+
+  const tarjeta = document.querySelectorAll('.carta')[indice];
+  tarjeta.classList.add('volteada');
+  volteadas.push(indice);
+
+  if(volteadas.length === 2){
+    intentos++;
+    actualizarEstadisticas();
+    
+    if(intentos >= MAX_INTENTOS){
+      terminarJuego(false, 'intentos');
+      return;
+    }
+
+    const [a, b] = volteadas;
+    const cartasDom = document.querySelectorAll('.carta');
+    const emojiA = cartasDom[a].dataset.emoji;
+    const emojiB = cartasDom[b].dataset.emoji;
+
+    bloqueado = true;
+
+    if(emojiA === emojiB){
+      parejasEncontradas++;
+      cartasDom[a].classList.add('acertada');
+      cartasDom[b].classList.add('acertada');
+      volteadas = [];
+      bloqueado = false;
+      actualizarEstadisticas();
+      
+      if(parejasEncontradas === 8){
+        terminarJuego(true, 'completo');
+      }
+    } else {
+      setTimeout(()=>{
+        cartasDom[a].classList.remove('volteada');
+        cartasDom[b].classList.remove('volteada');
+        volteadas = [];
+        bloqueado = false;
+      }, 1000);
+    }
+  }
+}
+
+function actualizarEstadisticas(){
+  document.getElementById('tiempoRestante').textContent = segundosRestantes;
+  document.getElementById('intentos').textContent = ${intentos}/${MAX_INTENTOS};
+  document.getElementById('encontradas').textContent = ${parejasEncontradas}/8;
   
-  document.getElementById('tituloRecuerdo').value = '';
-  document.getElementById('detalleRecuerdo').value = '';
+  const porcentaje = (segundosRestantes / TIEMPO_LIMITE) * 100;
+  document.getElementById('barraTiempo').style.width = porcentaje + '%';
+  document.getElementById('barraTiempo').textContent = segundosRestantes + 's';
+  document.getElementById('barraTiempo').classList.toggle('urgente', segundosRestantes <= 10);
+}
+
+function iniciarCronometro(){
+  segundosRestantes = TIEMPO_LIMITE;
+  actualizarEstadisticas();
+  cronometro = setInterval(()=>{
+    segundosRestantes--;
+    actualizarEstadisticas();
+    if(segundosRestantes <= 0){
+      terminarJuego(false, 'tiempo');
+    }
+  }, 1000);
+}
+
+function terminarJuego(gano, motivo){
+  juegoActivo = false;
+  clearInterval(cronometro);
   
-  cargarDatos();
-  alert('✅ Recuerdo guardado con éxito');
+  let titulo, texto;
+  if(gano){
+    titulo = '🎉 ¡¡GANASTE $10 USD!!';
+    texto = Completaste el desafío en ${TIEMPO_LIMITE - segundosRestantes} segundos y ${intentos} intentos.<br><br>¡Felicidades! Has ganado $10 USD.;
+  } else {
+    titulo = '😔 NO LOGRASTE ESTA VEZ';
+    const razon = motivo === 'tiempo' ? 'se agotó el tiempo' : 'alcanzaste los 20 intentos';
+    texto = No lograste completar las parejas — ${razon}.<br><br>No hay pagos adicionales. ¡Inténtalo de nuevo!;
+  }
+
+  document.getElementById('tituloFinal').style.color = gano ? '#2E7D32' : '#c62828';
+  document.getElementById('tituloFinal').textContent = titulo;
+  document.getElementById('textoFinal').innerHTML = texto;
+  
+  document.getElementById('fondoFinal').style.display = 'block';
+  document.getElementById('mensajeFinal').style.display = 'block';
+}
+
+function cerrarMensaje(){
+  document.getElementById('fondoFinal').style.display = 'none';
+  document.getElementById('mensajeFinal').style.display = 'none';
+}
+
+function iniciarJuego(){
+  clearInterval(cronometro);
+  intentos = 0;
+  parejasEncontradas = 0;
+  volteadas = [];
+  bloqueado = false;
+  juegoActivo = true;
+  crearTablero();
+  iniciarCronometro();
+}
+
+function reiniciarJuego(){
+  cerrarMensaje();
+  iniciarJuego();
 }
 </script>
 </body>
